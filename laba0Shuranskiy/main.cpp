@@ -1,9 +1,10 @@
 #include <iostream>
-
+using namespace std;
 int main()
 {
-	std::cout << "Hello Wolrd!" << std::endl;
-	std::string anything;
-	std::cin >> anything;
+	cout << "Hello Wolrd!" << endl;
+	int anything;
+	cin >> anything;
+	cout << 10/anything;
 	return 0;
 }
