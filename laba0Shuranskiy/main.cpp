@@ -54,9 +54,22 @@ void printKS(KS ks)//Вывод информации о компрессорной станции
 	cout << "Количество цехов в работе " << ks.ninwork;
 	cout << "Эффективность компрессорной станции " << ks.efect;
 }
+void editTruba(Truba &t)//Отправить трубу в ремонт
+{
+	t.sostoyanie = !t.sostoyanie;
+}
+void editKS(KS &ks)//Изменение цоехов в работе
+{
+	cout << "Введите количесвто цехов в работе\n";
+	int i;
+	cin >> i;
+	ks.ninwork = i;
+
+}
 int main()
 {
 	setlocale(LC_ALL, "Russian");
 	Truba infoTruba=creatTruba();
+	editTruba(infoTruba);
 	printTruba(infoTruba);
 }
