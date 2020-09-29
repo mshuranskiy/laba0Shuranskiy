@@ -20,34 +20,104 @@ struct KS//Компрессорная станция
 Truba creatTruba()//Создание трубы
 {
 	Truba t;
-	cout << "Введите длину трубы\n";
-	cin >> t.dlina;
-	cout << "Введите диаметр трубы\n";
-	cin >> t.diametr;
+	bool f=0;
+	while (f == 0)
+	{
+		cout << "Введите длину трубы (Еденица измерения: м)\n";
+		cin >> t.dlina;
+		if (cin.fail() || t.dlina <= 0)
+		{
+			cin.clear();
+			cin.ignore(32767, '\n');
+			cout << "Введённые данные не корректны. Попробуйте ещё раз.\n";
+		}
+		else
+		{
+			f = 1;
+		}
+	}
+	f = 0;
+	while (f == 0)
+	{
+		cout << "Введите диаметр трубы (Еденица измерения: мм)\n";
+		cin >> t.diametr;
+		if (cin.fail() || t.diametr <= 0)
+		{
+			cin.clear();
+			cin.ignore(32767, '\n');
+			cout << "Введённые данные не корректны. Попробуйте ещё раз.\n";
+		}
+		else
+		{
+			f = 1;
+		}
+	}
 	t.sostoyanie = false;
 	return t;
 }
 KS creatKS()//Создание компрессорной станции
 {
 	KS ks;
+	bool  f = 0;
 	cout << "Введите имя компрессорной станции\n";
 	cin >> ks.name;
-	cout << "Введите количество цехов\n";
-	cin >> ks.n;
-	cout << "Введите количество цехов в работе\n";
-	cin >> ks.ninwork;
-	cout << "Введите эффективность компрессорной станцции\n";
-	cin >> ks.efect;
+	while (f == 0)
+	{
+		cout << "Введите количество цехов\n";
+		cin >> ks.n;
+		if (cin.fail() || ks.n<=0)
+		{
+			cin.clear();
+			cin.ignore(32767, '\n');
+			cout << "Введённые данные не корректны. Попробуйте ещё раз.\n";
+		}
+		else
+		{
+			f = 1;
+		}
+	}
+	f = 0;
+	while (f == 0)
+	{
+		cout << "Введите количество цехов в работе\n";
+		cin >> ks.ninwork;
+		if (cin.fail() || ks.ninwork <= 0 || ks.ninwork>ks.n)
+		{
+			cin.clear();
+			cin.ignore(32767, '\n');
+			cout << "Введённые данные не корректны. Попробуйте ещё раз.\n";
+		}
+		else
+		{
+			f = 1;
+		}
+	}
+	f = 0;
+	while (f == 0)
+	{
+		cout << "Введите эффективность компрессорной станцции (Эффективность измеряется по 10-ти бальной шкале)\n";
+		cin >> ks.efect;
+		if (cin.fail() || ks.efect < 0)
+		{
+			cin.clear();
+			cin.ignore(32767, '\n');
+			cout << "Введённые данные не корректны. Попробуйте ещё раз.\n";
+		}
+		else
+		{
+			f = 1;
+		}
+	}
 	return ks;
 }
-void printTruba(Truba t)//Вывод информации о трубе
+void printTruba(const Truba &t)//Вывод информации о трубе
 {
 	cout << "Данные о трубе:\n";
-	cout << "Длина трубы: " << t.dlina<< endl;
-	cout << "Диаметр турбы: " << t.diametr << endl;
+	cout << "Длина трубы: " << t.dlina<<" (м)"<< endl;
+	cout << "Диаметр турбы: " << t.diametr << " (мм)" << endl;
 	cout << "Состояние трубы: " << (t.sostoyanie ? "В ремонте\n" : "Не в ремонте\n");
 }
-void printKS(KS ks)//Вывод информации о компрессорной станции
+void printKS(const KS &ks)//Вывод информации о компрессорной станции
 {
 	cout << "Данные о компрессорной станции:\n";
 	cout << "Имя компрессорной станции: " << ks.name << endl;
@@ -67,7 +137,7 @@ void editKS(KS &ks)//Изменение цоехов в работе
 	ks.ninwork = i;
 
 }
-void savefileTruba(Truba t)//Сохранение информации о трубе
+void savefileTruba(const Truba &t)//Сохранение информации о трубе
 {
 	ofstream fout;
 	fout.open("info.txt", ios::out);
@@ -93,7 +163,7 @@ Truba inputfileTruba()//Считывание информации о трубе
 	}
 	return t;
 }
-void savefileKS(KS ks)//Сохранение информации о компрессорной станции
+void savefileKS(const KS &ks)//Сохранение информации о компрессорной станции
 {
 	ofstream fout;
 	fout.open("info.txt", ios::out);
@@ -125,11 +195,11 @@ int main()
 {
 	setlocale(LC_ALL, "Russian");
 	KS infoks = creatKS();
-	editKS(infoks);
+	//editKS(infoks);
 	printKS(infoks);
-	savefileKS(infoks);
-	/*Truba infoTruba=inputfileTruba();
-	editTruba(infoTruba);
+	//savefileKS(infoks);
+	Truba infoTruba=creatTruba();
+	//editTruba(infoTruba);
 	printTruba(infoTruba);
-	savefileTruba(infoTruba);*/
+	//savefileTruba(infoTruba);
 }
