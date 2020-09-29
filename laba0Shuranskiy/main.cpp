@@ -81,7 +81,7 @@ KS creatKS()//Создание компрессорной станции
 	{
 		cout << "Введите количество цехов в работе\n";
 		cin >> ks.ninwork;
-		if (cin.fail() || ks.ninwork <= 0 || ks.ninwork>ks.n)
+		if (cin.fail() || ks.ninwork < 0 || ks.ninwork>ks.n)
 		{
 			cin.clear();
 			cin.ignore(32767, '\n');
@@ -131,11 +131,22 @@ void editTruba(Truba &t)//Отправить трубу в ремонт
 }
 void editKS(KS &ks)//Изменение цоехов в работе
 {
-	cout << "Введите количесвто цехов в работе\n";
-	int i;
-	cin >> i;
-	ks.ninwork = i;
-
+	bool f = 0;
+	while (f == 0)
+	{
+		cout << "Введите количество цехов в работе\n";
+		cin >> ks.ninwork;
+		if (cin.fail() || ks.ninwork < 0 || ks.ninwork > ks.n)
+		{
+			cin.clear();
+			cin.ignore(32767, '\n');
+			cout << "Введённые данные не корректны. Попробуйте ещё раз.\n";
+		}
+		else
+		{
+			f = 1;
+		}
+	}
 }
 void savefileTruba(const Truba &t)//Сохранение информации о трубе
 {
@@ -195,7 +206,7 @@ int main()
 {
 	setlocale(LC_ALL, "Russian");
 	KS infoks = creatKS();
-	//editKS(infoks);
+	editKS(infoks);
 	printKS(infoks);
 	//savefileKS(infoks);
 	Truba infoTruba=creatTruba();
