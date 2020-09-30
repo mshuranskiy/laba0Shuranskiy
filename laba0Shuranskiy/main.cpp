@@ -202,15 +202,154 @@ KS inputfileKS()//Считывание информации о компрессорной станции
 	}
 	return ks;
 }
+void printmenu()
+{
+	cout << "1-Добавить трубу\n";
+	cout << "2-Добавить компрессорную станцию\n";
+	cout << "3-Вывести информацию о трубе\n";
+	cout << "4-Вывести информацию о компрессорной станции\n";
+	cout << "5-Редактировать состояние трубы\n";
+	cout << "6-Редактировать колличество цехов в работе компрессорной станции\n";
+	cout << "7-Сохранить данные о трубе в файл\n";
+	cout << "8-Сохранить данные о компрессорной станции в файл\n";
+	cout << "9-Считать данные о трубе из файла\n";
+	cout << "10-Считать данные о компрессорной станции из файла\n";
+	cout << "0-Выход\n";
+}
 int main()
 {
 	setlocale(LC_ALL, "Russian");
+	KS infoks;
+	Truba infotruba;
+	bool ft = 0;
+	bool fks = 0;
+	while (1)
+	{
+		printmenu();
+		cout << "Введите номер действия\n";
+		int i;
+		cin >> i;
+		switch (i)
+		{
+		case 1:
+		{
+			infotruba=creatTruba();
+			ft = 1;
+			break;
+		}
+		case 2:
+		{
+			infoks=creatKS();
+			fks = 1;
+			break;
+		}
+		case 3:
+		{
+			if (ft == 1)
+			{
+			printTruba(infotruba);
+			break; 
+			}
+			else
+			{
+				cout << "Труба не создана. Попробуйте ещё раз.\n";
+				break;
+			}
+		}
+		case 4:
+		{
+			if (fks == 1)
+			{
+				printKS(infoks);
+				break;
+			}
+			else
+			{
+				cout << "Компрессорная станция не создана. Попробуйте ещё раз.\n";
+				break;
+			}
+		}
+		case 5:
+		{
+			if (ft == 1)
+			{
+				editTruba(infotruba);
+				break;
+			}
+			else
+			{
+				cout << "Труба не создана. Попробуйте ещё раз.\n";
+				break;
+			}
+		}
+		case 6:
+		{
+			if (fks == 1)
+			{
+				editKS(infoks);
+				break;
+			}
+			else
+			{
+				cout << "Компрессорная станция не создана. Попробуйте ещё раз.\n";
+				break;
+			}
+		}
+		case 7:
+		{
+			if (ft == 1)
+			{
+				savefileTruba(infotruba);
+				break;
+			}
+			else
+			{
+				cout << "Труба не создана. Попробуйте ещё раз.\n";
+				break;
+			}
+		}
+		case 8:
+		{
+			if (fks == 1)
+			{
+				savefileKS(infoks);
+				break;
+			}
+			else
+			{
+				cout << "Компрессорная станция не создана. Попробуйте ещё раз.\n";
+				break;
+			}
+		}
+		case 9:
+		{
+			infotruba=inputfileTruba();
+			ft = 1;
+			break;
+		}
+		case 10:
+		{
+			infoks=inputfileKS();
+			fks = 1;
+			break;
+		}
+		case 0:
+		{
+			break;
+		}
+		default:
+		{
+			cout << "Данные введены не корректно. Попробуйте ещё раз.";
+		}
+		}
+	}
+	/*
 	KS infoks = creatKS();
 	editKS(infoks);
 	printKS(infoks);
-	//savefileKS(infoks);
+	savefileKS(infoks);
 	Truba infoTruba=creatTruba();
-	//editTruba(infoTruba);
+	editTruba(infoTruba);
 	printTruba(infoTruba);
-	//savefileTruba(infoTruba);
+	savefileTruba(infoTruba);*/
 }
