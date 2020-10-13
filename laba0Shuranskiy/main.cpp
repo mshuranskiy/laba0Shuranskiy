@@ -41,6 +41,7 @@ int getint(string text, int border1, int border2=10000)
 Truba creatTruba()//Создание трубы
 {
 	Truba t;
+	t.id = "1";
 	while (1)
 	{
 		cout << "Введите длину трубы (Еденица измерения: м)\n";
@@ -92,89 +93,49 @@ void editTruba(Truba &t)//Отправить трубу в ремонт
 }
 void editKS(KS &ks)//Изменение цоехов в работе
 {
-	bool f = 0;
-	while (f == 0)
-	{
-		cout << "Введите количество цехов в работе\n";
-		cin >> ks.ninwork;
-		if (cin.fail() || ks.ninwork < 0 || ks.ninwork > ks.n)
-		{
-			cin.clear();
-			cin.ignore(32767, '\n');
-			cout << "Введённые данные не корректны. Попробуйте ещё раз.\n";
-		}
-		else
-		{
-			f = 1;
-		}
-	}
+	ks.ninwork = getint("Введите количество цехов в работе", 0, ks.n);
 }
-void savefileTruba(const Truba &t)//Сохранение информации о трубе
+void savefileTruba(ofstream& fout, const Truba &t)//Сохранение информации о трубе
 {
-	ofstream fout;
-	fout.open("info.txt", ios::out);
-	if (fout.is_open())
-	{
-		fout << t.id << endl;
-		fout << t.dlina << endl;
-		fout << t.diametr << endl;
-		fout << t.sostoyanie << endl;
-		fout.close();
-	}
+	fout << t.id << endl;
+	fout << t.dlina << endl;
+	fout << t.diametr << endl;
+	fout << t.sostoyanie << endl;
 }
-Truba inputfileTruba()//Считывание информации о трубе
+Truba inputfileTruba(ifstream& fin)//Считывание информации о трубе
 {
 	Truba t;
-	ifstream fin;
-	fin.open("info.txt", ios::in);
-	if (fin.is_open())
-	{
-		fin >> t.id;
-		fin >> t.dlina;
-		fin >> t.diametr;
-		fin >> t.sostoyanie;
-		fin.close();
-	}
+	fin >> t.id;
+	fin >> t.dlina;
+	fin >> t.diametr;
+	fin >> t.sostoyanie;
 	return t;
 }
-void savefileKS(const KS &ks)//Сохранение информации о компрессорной станции
+void savefileKS(ofstream& fout,const KS &ks)//Сохранение информации о компрессорной станции
 {
-	ofstream fout;
-	fout.open("info.txt", ios::app);
-	if (fout.is_open())
-	{
-		fout << ks.name<<endl;
-		fout  << ks.n << endl;
-		fout  << ks.ninwork << endl;
-		fout << ks.efect << endl;
-		fout.close();
-	}
+	fout << ks.name<<endl;
+	fout  << ks.n << endl;
+	fout  << ks.ninwork << endl;
+	fout << ks.efect << endl;
 }
-KS inputfileKS()//Считывание информации о компрессорной станции
+KS inputfileKS(ifstream& fin)//Считывание информации о компрессорной станции
 {
 	KS ks;
-	ifstream fin;
-	fin.open("info.txt", ios::in);
-	if (fin.is_open())
-	{
-		fin >> ks.name;
-		fin >> ks.n;
-		fin >> ks.ninwork;
-		fin >> ks.efect;
-		fin.close();
-	}
+	fin >> ks.name;
+	fin >> ks.n;
+	fin >> ks.ninwork;
+	fin >> ks.efect;
 	return ks;
 }
 void printmenu()
 {
 	cout << "1-Добавить трубу\n";
 	cout << "2-Добавить компрессорную станцию\n";
-	cout << "3-Вывести информацию о трубе\n";
-	cout << "4-Вывести информацию о компрессорной станции\n";
-	cout << "5-Редактировать состояние трубы\n";
-	cout << "6-Редактировать колличество цехов в работе компрессорной станции\n";
-	cout << "7-Сохранить данные файл\n";
-	cout << "8-Считать данные из файла\n";
+	cout << "3-Вывести информацию о трубе и компрессорной станции\n";
+	cout << "4-Редактировать состояние трубы\n";
+	cout << "5-Редактировать колличество цехов в работе компрессорной станции\n";
+	cout << "6-Сохранить данные файл\n";
+	cout << "7-Считать данные из файла\n";
 	cout << "0-Выход\n";
 }
 int main()
@@ -205,31 +166,34 @@ int main()
 		}
 		case 3:
 		{
-			if (ft)
+			if (ft || fks)
 			{
-			printTruba(infotruba);
-			break; 
+				if (ft)
+				{
+					printTruba(infotruba);
+				}
+				else
+				{
+					cout << "Труба не создана.\n";
+				}
+				if (fks)
+				{
+					printKS(infoks);
+				}
+				else
+				{
+					cout << "Компрессорная станция не создана.\n";
+				}
+				break;
+
 			}
-			else
+			else 
 			{
-				cout << "Труба не создана. Попробуйте ещё раз.\n";
+				cout << "Труба или Компрессорная станция не создана. Попробуйте ещё раз.\n";
 				break;
 			}
 		}
 		case 4:
-		{
-			if (fks)
-			{
-				printKS(infoks);
-				break;
-			}
-			else
-			{
-				cout << "Компрессорная станция не создана. Попробуйте ещё раз.\n";
-				break;
-			}
-		}
-		case 5:
 		{
 			if (ft)
 			{
@@ -242,7 +206,7 @@ int main()
 				break;
 			}
 		}
-		case 6:
+		case 5:
 		{
 			if (fks)
 			{
@@ -255,31 +219,56 @@ int main()
 				break;
 			}
 		}
-		case 7:
+		case 6:
 		{
 			if (ft||fks)
 			{
-				savefileTruba(infotruba);
-				savefileKS(infoks);
+				ofstream fout;
+				fout.open("info.txt", ios::out);
+				if (fout.is_open())
+				{
+					fout << ft<<endl;
+					fout << fks << endl;
+					if (ft)
+					{
+						savefileTruba(fout, infotruba);
+					}
+					if (fks)
+					{
+						savefileKS(fout, infoks);
+					}
+					fout.close();
+				}
 				break;
 			}
 			else
 			{
-				cout << "Компрессорная станция или труба не создана. Попробуйте ещё раз.\n";
+				cout << "Труба или Компрессорная станция не создана. Попробуйте ещё раз.\n";
 				break;
 			}
 		}
-		case 8:
+		case 7:
 		{
-			infotruba=inputfileTruba();
-			infoks=inputfileKS();
-			ft = true;
-			fks = true;
+			ifstream fin;
+			fin.open("info.txt", ios::in);
+			if (fin.is_open())
+			{
+				fin >> ft;
+				fin >> fks;
+				if (ft)
+				{
+					infotruba = inputfileTruba(fin);
+				}
+				if (fks)
+				{
+					infoks = inputfileKS(fin);
+				}
+			}
 			break;
 		}
 		case 0:
 		{
-			break;
+			return 0;
 		}
 		default:
 		{
