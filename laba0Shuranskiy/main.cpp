@@ -18,9 +18,10 @@ struct KS//Компрессорная станция
 	int ninwork;//Количсевто цехов в работе
 	int efect;//Эффективность
 };
-int getint(string text, int border1, int border2=10000)
+template <typename T>
+T getint(string text, T border1, T border2=10000)
 {
-	int value;
+	T value;
 	while (1)
 	{
 		cout << text<<endl;
@@ -42,21 +43,7 @@ Truba creatTruba()//Создание трубы
 {
 	Truba t;
 	t.id = "1";
-	while (1)
-	{
-		cout << "Введите длину трубы (Еденица измерения: м)\n";
-		cin >> t.dlina;
-		if (cin.fail() || t.dlina <= 0)
-		{
-			cin.clear();
-			cin.ignore(32767, '\n');
-			cout << "Введённые данные не корректны. Попробуйте ещё раз.\n";
-		}
-		else
-		{
-			break;
-		}
-	}
+	t.dlina=getint("Введите длину трубы (Еденица измерения: м)",1.0);
 	t.diametr = getint("Введите диаметр трубы(Еденица измерения : мм)",1);
 	t.sostoyanie = false;
 	return t;
