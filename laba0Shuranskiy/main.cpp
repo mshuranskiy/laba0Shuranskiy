@@ -1,11 +1,12 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <vector>
 using namespace std;
 struct Truba//Труба
 {
 	string id;//Идентификатор
-	float dlina;//Длина
+	double dlina;//Длина
 	int diametr;//Диаметр
 	bool sostoyanie;//Состояние в ремонте или нет
 
@@ -114,6 +115,16 @@ KS inputfileKS(ifstream& fin)//Считывание информации о компрессорной станции
 	fin >> ks.efect;
 	return ks;
 }
+Truba& selectTruba(vector<Truba>& Truboprovod)
+{
+	unsigned int index = getint("Введите номер трубы", 1u, Truboprovod.size());
+	return Truboprovod[index-1];
+}
+KS& selectKS(vector<KS>& Zavod)
+{
+	unsigned int index = getint("Введите номер компрессорной станции", 1u, Zavod.size());
+	return Zavod[index-1];
+}
 void printmenu()
 {
 	cout << "1-Добавить трубу\n";
@@ -128,10 +139,8 @@ void printmenu()
 int main()
 {
 	setlocale(LC_ALL, "Russian");
-	KS infoks;
-	Truba infotruba;
-	bool ft = false;
-	bool fks = false;
+	vector <Truba> Truboprovod;
+	vector <KS> Zavod;
 	while (1)
 	{
 		printmenu();
@@ -141,31 +150,29 @@ int main()
 		{
 		case 1:
 		{
-			infotruba=creatTruba();
-			ft = true;
+			Truboprovod.push_back(creatTruba());
 			break;
 		}
 		case 2:
 		{
-			infoks=creatKS();
-			fks = true;
+			Zavod.push_back(creatKS());
 			break;
 		}
 		case 3:
 		{
-			if (ft || fks)
+			if (Truboprovod.size()>0 || Zavod.size()>0)
 			{
-				if (ft)
+				if (Truboprovod.size()>0)
 				{
-					printTruba(infotruba);
+					printTruba(selectTruba(Truboprovod));
 				}
 				else
 				{
 					cout << "Труба не создана.\n";
 				}
-				if (fks)
+				if (Zavod.size() > 0)
 				{
-					printKS(infoks);
+					printKS(selectKS(Zavod));
 				}
 				else
 				{
@@ -182,9 +189,9 @@ int main()
 		}
 		case 4:
 		{
-			if (ft)
+			if (Truboprovod.size()>0)
 			{
-				editTruba(infotruba);
+				editTruba(selectTruba(Truboprovod));
 				break;
 			}
 			else
@@ -195,9 +202,9 @@ int main()
 		}
 		case 5:
 		{
-			if (fks)
+			if (Zavod.size()>0)
 			{
-				editKS(infoks);
+				editKS(selectKS(Zavod));
 				break;
 			}
 			else
@@ -208,21 +215,27 @@ int main()
 		}
 		case 6:
 		{
-			if (ft||fks)
+			if (Truboprovod.size()>0||Zavod.size()>0)
 			{
 				ofstream fout;
 				fout.open("info.txt", ios::out);
 				if (fout.is_open())
 				{
-					fout << ft<<endl;
-					fout << fks << endl;
-					if (ft)
+					fout << Truboprovod.size()<<endl;
+					fout << Zavod.size()<< endl;
+					if (Truboprovod.size() > 0)
 					{
-						savefileTruba(fout, infotruba);
+						for (Truba infotruba : Truboprovod)
+						{
+							savefileTruba(fout, infotruba);
+						}
 					}
-					if (fks)
+					if (Zavod.size() > 0)
 					{
-						savefileKS(fout, infoks);
+						for (KS infoKS : Zavod)
+						{
+							savefileKS(fout, infoKS);
+						}
 					}
 					fout.close();
 				}
@@ -240,15 +253,27 @@ int main()
 			fin.open("info.txt", ios::in);
 			if (fin.is_open())
 			{
-				fin >> ft;
-				fin >> fks;
-				if (ft)
+				int countt;
+				int countks;
+				fin >> countt;
+				fin >> countks;
+				Truba infotruba;
+				KS infoKS;
+				if (countt>0)
 				{
-					infotruba = inputfileTruba(fin);
+					while (countt--)
+					{
+						infotruba = inputfileTruba(fin);
+						Truboprovod.push_back(infotruba);
+					}
 				}
-				if (fks)
+				if (countks)
 				{
-					infoks = inputfileKS(fin);
+					while (countks--)
+					{
+						infoKS = inputfileKS(fin);
+						Zavod.push_back(infoKS);
+					}
 				}
 			}
 			break;
