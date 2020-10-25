@@ -2,25 +2,11 @@
 #include <fstream>
 #include <string>
 #include <vector>
+#include "Truba.h";
+#include "KS.h";
 using namespace std;
-struct Truba//Труба
-{
-	string id;//Идентификатор
-	double dlina;//Длина
-	int diametr;//Диаметр
-	bool sostoyanie;//Состояние в ремонте или нет
-
-};
-struct KS//Компрессорная станция
-{
-	string name;//Имя
-	string id;//идентификатор
-	int n;//Количество цехов
-	int ninwork;//Количсевто цехов в работе
-	int efect;//Эффективность
-};
 template <typename T>
-T getint(string text, T border1, T border2=10000)
+T getint(string text, T border1, T border2)
 {
 	T value;
 	while (1)
@@ -38,14 +24,13 @@ T getint(string text, T border1, T border2=10000)
 			return value;
 		}
 	}
-
 }
 Truba creatTruba()//Создание трубы
 {
 	Truba t;
 	t.id = "1";
-	t.dlina=getint("Введите длину трубы (Еденица измерения: м)",1.0);
-	t.diametr = getint("Введите диаметр трубы(Еденица измерения : мм)",1);
+	t.dlina=getint("Введите длину трубы (Еденица измерения: м)",1.0,10000.0);
+	t.diametr = getint("Введите диаметр трубы(Еденица измерения : мм)",1,10000);
 	t.sostoyanie = false;
 	return t;
 }
@@ -55,9 +40,9 @@ KS creatKS()//Создание компрессорной станции
 	cout << "Введите имя компрессорной станции\n";
 	cin.get();
 	getline(cin,ks.name);
-	ks.n = getint("Введите количество цехов", 1);
+	ks.n = getint("Введите количество цехов", 1,10000);
 	ks.ninwork = getint("Введите количество цехов в работе", 0,ks.n);
-	ks.efect = getint("Введите эффективность компрессорной станцции (Эффективность измеряется по 10-ти бальной шкале)", 0);
+	ks.efect = getint("Введите эффективность компрессорной станцции (Эффективность измеряется по 10-ти бальной шкале)", 0,10000);
 	return ks;
 }
 void printTruba(const Truba &t)//Вывод информации о трубе
@@ -145,7 +130,7 @@ int main()
 	{
 		printmenu();
 		int i;
-		i=getint("Введите номер действия",0);
+		i=getint("Введите номер действия",0,10000);
 		switch (i)
 		{
 		case 1:

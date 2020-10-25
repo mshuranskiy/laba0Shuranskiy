@@ -139,7 +139,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="KS.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Truba.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="KS.h" />
+    <ClInclude Include="Truba.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
