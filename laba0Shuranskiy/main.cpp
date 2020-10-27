@@ -102,13 +102,23 @@ KS inputfileKS(ifstream& fin)//Считывание информации о компрессорной станции
 }
 Truba& selectTruba(vector<Truba>& Truboprovod)
 {
-	unsigned int index = getint("Введите номер трубы", 1u, Truboprovod.size());
+	unsigned int index = getint("Введите номер трубы", (size_t)1u, Truboprovod.size());
 	return Truboprovod[index-1];
 }
 KS& selectKS(vector<KS>& Zavod)
 {
-	unsigned int index = getint("Введите номер компрессорной станции", 1u, Zavod.size());
+	unsigned int index = getint("Введите номер компрессорной станции", (size_t)1u, Zavod.size());
 	return Zavod[index-1];
+}
+void deleteTruba(vector<Truba>& Truboprovod)
+{
+	unsigned int index = getint("Введите номер трубы", (size_t)1u, Truboprovod.size());
+	Truboprovod.erase(Truboprovod.begin() + index - 1);
+}
+void deleteKS(vector<KS>& Zavod)
+{
+	unsigned int index = getint("Введите номер трубы", (size_t)1u, Zavod.size());
+	Zavod.erase(Zavod.begin() + index - 1);
 }
 void printmenu()
 {
@@ -119,6 +129,8 @@ void printmenu()
 	cout << "5-Редактировать колличество цехов в работе компрессорной станции\n";
 	cout << "6-Сохранить данные файл\n";
 	cout << "7-Считать данные из файла\n";
+	cout << "8-Удалить трубу\n";
+	cout << "9-Удалить компрессорную станцию\n";
 	cout << "0-Выход\n";
 }
 int main()
@@ -260,7 +272,18 @@ int main()
 						Zavod.push_back(infoKS);
 					}
 				}
+				fin.close();
 			}
+			break;
+		}
+		case 8:
+		{
+			deleteTruba(Truboprovod);
+			break;
+		}
+		case 9:
+		{
+			deleteKS(Zavod);
 			break;
 		}
 		case 0:
