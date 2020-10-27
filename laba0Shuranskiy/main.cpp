@@ -4,102 +4,8 @@
 #include <vector>
 #include "Truba.h";
 #include "KS.h";
+#include "utils.h";
 using namespace std;
-template <typename T>
-T getint(string text, T border1, T border2)
-{
-	T value;
-	while (1)
-	{
-		cout << text<<endl;
-		cin >> value;
-		if (cin.fail() || value < border1 || value >border2)
-		{
-			cin.clear();
-			cin.ignore(32767, '\n');
-			cout << "Введённые данные не корректны. Попробуйте ещё раз.\n";
-		}
-		else
-		{
-			return value;
-		}
-	}
-}
-Truba creatTruba()//Создание трубы
-{
-	Truba t;
-	t.id = "1";
-	t.dlina=getint("Введите длину трубы (Еденица измерения: м)",1.0,10000.0);
-	t.diametr = getint("Введите диаметр трубы(Еденица измерения : мм)",1,10000);
-	t.sostoyanie = false;
-	return t;
-}
-KS creatKS()//Создание компрессорной станции
-{
-	KS ks;
-	cout << "Введите имя компрессорной станции\n";
-	cin.get();
-	getline(cin,ks.name);
-	ks.n = getint("Введите количество цехов", 1,10000);
-	ks.ninwork = getint("Введите количество цехов в работе", 0,ks.n);
-	ks.efect = getint("Введите эффективность компрессорной станцции (Эффективность измеряется по 10-ти бальной шкале)", 0,10000);
-	return ks;
-}
-void printTruba(const Truba &t)//Вывод информации о трубе
-{
-	cout << "Данные о трубе:\n";
-	cout << "Длина трубы: " << t.dlina<<" (м)"<< endl;
-	cout << "Диаметр турбы: " << t.diametr << " (мм)" << endl;
-	cout << "Состояние трубы: " << (t.sostoyanie ? "В ремонте\n" : "Не в ремонте\n");
-}
-void printKS(const KS &ks)//Вывод информации о компрессорной станции
-{
-	cout << "Данные о компрессорной станции:\n";
-	cout << "Имя компрессорной станции: " << ks.name << endl;
-	cout << "Количество цехов на компрессорной станции: " << ks.n << endl;
-	cout << "Количество цехов в работе: " << ks.ninwork << endl;
-	cout << "Эффективность компрессорной станции: " << ks.efect << endl;
-}
-void editTruba(Truba &t)//Отправить трубу в ремонт
-{
-	t.sostoyanie = !t.sostoyanie;
-}
-void editKS(KS &ks)//Изменение цоехов в работе
-{
-	ks.ninwork = getint("Введите количество цехов в работе", 0, ks.n);
-}
-void savefileTruba(ofstream& fout, const Truba &t)//Сохранение информации о трубе
-{
-	fout << t.id << endl;
-	fout << t.dlina << endl;
-	fout << t.diametr << endl;
-	fout << t.sostoyanie << endl;
-}
-Truba inputfileTruba(ifstream& fin)//Считывание информации о трубе
-{
-	Truba t;
-	fin >> t.id;
-	fin >> t.dlina;
-	fin >> t.diametr;
-	fin >> t.sostoyanie;
-	return t;
-}
-void savefileKS(ofstream& fout,const KS &ks)//Сохранение информации о компрессорной станции
-{
-	fout << ks.name<<endl;
-	fout  << ks.n << endl;
-	fout  << ks.ninwork << endl;
-	fout << ks.efect << endl;
-}
-KS inputfileKS(ifstream& fin)//Считывание информации о компрессорной станции
-{
-	KS ks;
-	fin >> ks.name;
-	fin >> ks.n;
-	fin >> ks.ninwork;
-	fin >> ks.efect;
-	return ks;
-}
 Truba& selectTruba(vector<Truba>& Truboprovod)
 {
 	unsigned int index = getint("Введите номер трубы", (size_t)1u, Truboprovod.size());
@@ -124,7 +30,7 @@ void printmenu()
 {
 	cout << "1-Добавить трубу\n";
 	cout << "2-Добавить компрессорную станцию\n";
-	cout << "3-Вывести информацию о трубе и компрессорной станции\n";
+	cout << "3-Вывести данные\n";
 	cout << "4-Редактировать состояние трубы\n";
 	cout << "5-Редактировать колличество цехов в работе компрессорной станции\n";
 	cout << "6-Сохранить данные файл\n";
@@ -161,7 +67,10 @@ int main()
 			{
 				if (Truboprovod.size()>0)
 				{
-					printTruba(selectTruba(Truboprovod));
+					for (const auto& infotruba : Truboprovod)
+					{
+						printTruba(infotruba);
+					}
 				}
 				else
 				{
@@ -169,7 +78,10 @@ int main()
 				}
 				if (Zavod.size() > 0)
 				{
-					printKS(selectKS(Zavod));
+					for (const auto& infoKS : Zavod)
+					{
+						printKS(infoKS);
+					}
 				}
 				else
 				{
@@ -222,14 +134,14 @@ int main()
 					fout << Zavod.size()<< endl;
 					if (Truboprovod.size() > 0)
 					{
-						for (Truba infotruba : Truboprovod)
+						for (const auto& infotruba : Truboprovod)
 						{
 							savefileTruba(fout, infotruba);
 						}
 					}
 					if (Zavod.size() > 0)
 					{
-						for (KS infoKS : Zavod)
+						for (const auto& infoKS : Zavod)
 						{
 							savefileKS(fout, infoKS);
 						}
