@@ -6,7 +6,7 @@
 
 unsigned int KS::IDks = 0;
 
-KS creatKS()//Создание компрессорной станции
+KS KS::creatKS()//Создание компрессорной станции
 {
 	KS ks;
 	ks.id = ++KS::IDks;
@@ -33,7 +33,7 @@ void editKS(KS& ks)//Изменение цоехов в работе
 	ks.ninwork = getint("Введите количество цехов в работе", 0, ks.n);
 }
 
-void savefileKS(ofstream& fout, const KS& ks)//Сохранение информации о компрессорной станции
+void savefileKS(std::ofstream& fout, const KS& ks)//Сохранение информации о компрессорной станции
 {
 	fout << ks.id << endl;
 	fout << ks.name << endl;
@@ -42,7 +42,7 @@ void savefileKS(ofstream& fout, const KS& ks)//Сохранение информации о компрессо
 	fout << ks.efect << endl;
 }
 
-KS inputfileKS(ifstream& fin)//Считывание информации о компрессорной станции
+KS KS::inputfileKS(std::ifstream& fin)//Считывание информации о компрессорной станции
 {
 	KS ks;
 	fin >> ks.id;
@@ -51,4 +51,26 @@ KS inputfileKS(ifstream& fin)//Считывание информации о компрессорной станции
 	fin >> ks.ninwork;
 	fin >> ks.efect;
 	return ks;
+}
+
+KS& selectKS(vector<KS>& Zavod)//Выбор компрессорной станции
+{
+	unsigned int index = getint("Введите номер компрессорной станции", (size_t)1u, Zavod.size());
+	return Zavod[index - 1];
+}
+
+void deleteKS(vector<KS>& Zavod)//Удаление компрессорной станции
+{
+	unsigned int index = getint("Введите номер трубы", (size_t)1u, Zavod.size());
+	Zavod.erase(Zavod.begin() + index - 1);
+}
+
+bool SearchKSByName(const KS& ks, std::string parametr)//Поиск по имени
+{
+	return ks.name == parametr;
+}
+
+bool SearchKSByNinwork(const KS& ks, double parametr)//Поиск по проценту не работающих цехов
+{
+	return 1-ks.n/ks.ninwork >= parametr;
 }

@@ -6,26 +6,6 @@
 #include "KS.h";
 #include "utils.h";
 using namespace std;
-Truba& selectTruba(vector<Truba>& Truboprovod)
-{
-	unsigned int index = getint("Введите номер трубы", (size_t)1u, Truboprovod.size());
-	return Truboprovod[index-1];
-}
-KS& selectKS(vector<KS>& Zavod)
-{
-	unsigned int index = getint("Введите номер компрессорной станции", (size_t)1u, Zavod.size());
-	return Zavod[index-1];
-}
-void deleteTruba(vector<Truba>& Truboprovod)
-{
-	unsigned int index = getint("Введите номер трубы", (size_t)1u, Truboprovod.size());
-	Truboprovod.erase(Truboprovod.begin() + index - 1);
-}
-void deleteKS(vector<KS>& Zavod)
-{
-	unsigned int index = getint("Введите номер трубы", (size_t)1u, Zavod.size());
-	Zavod.erase(Zavod.begin() + index - 1);
-}
 void printmenu()
 {
 	cout << "1-Добавить трубу\n";
@@ -53,12 +33,12 @@ int main()
 		{
 		case 1:
 		{
-			Truboprovod.push_back(creatTruba());
+			Truboprovod.push_back(Truba::creatTruba());
 			break;
 		}
 		case 2:
 		{
-			Zavod.push_back(creatKS());
+			Zavod.push_back(KS::creatKS());
 			break;
 		}
 		case 3:
@@ -67,7 +47,7 @@ int main()
 			{
 				if (Truboprovod.size()>0)
 				{
-					for (const auto& infotruba : Truboprovod)
+					for (auto& infotruba : Truboprovod)
 					{
 						printTruba(infotruba);
 					}
@@ -78,7 +58,7 @@ int main()
 				}
 				if (Zavod.size() > 0)
 				{
-					for (const auto& infoKS : Zavod)
+					for (auto& infoKS : Zavod)
 					{
 						printKS(infoKS);
 					}
@@ -134,14 +114,14 @@ int main()
 					fout << Zavod.size()<< endl;
 					if (Truboprovod.size() > 0)
 					{
-						for (const auto& infotruba : Truboprovod)
+						for (auto& infotruba : Truboprovod)
 						{
 							savefileTruba(fout, infotruba);
 						}
 					}
 					if (Zavod.size() > 0)
 					{
-						for (const auto& infoKS : Zavod)
+						for (auto& infoKS : Zavod)
 						{
 							savefileKS(fout, infoKS);
 						}
@@ -172,7 +152,7 @@ int main()
 				{
 					while (countt--)
 					{
-						infotruba = inputfileTruba(fin);
+						infotruba = Truba::inputfileTruba(fin);
 						Truboprovod.push_back(infotruba);
 					}
 				}
@@ -180,7 +160,7 @@ int main()
 				{
 					while (countks--)
 					{
-						infoKS = inputfileKS(fin);
+						infoKS = KS::inputfileKS(fin);
 						Zavod.push_back(infoKS);
 					}
 				}
