@@ -19,7 +19,7 @@ istream& operator >> (istream& in, KS& ks)//Создание компрессорной станции
 
 }
 
-ostream& operator << (ostream& out, KS& ks)//Вывод информации о компрессорной станции
+ostream& operator << (ostream& out,const KS& ks)//Вывод информации о компрессорной станции
 {
 	out << "Данные о компрессорной станции:\n";
 	out << "Имя компрессорной станции: " << ks.name << endl;

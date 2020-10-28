@@ -18,7 +18,7 @@ istream& operator >> (istream& in, Truba& t)//Создание трубы
 	return in;
 }
 
-ostream& operator << (ostream& out, Truba& t)//Вывод информации о трубе
+ostream& operator << (ostream& out,const Truba& t)//Вывод информации о трубе
 {
 	out << "Данные о трубе:\n";
 	out << "Имя трубы: " << t.name << endl;

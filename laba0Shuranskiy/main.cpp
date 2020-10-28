@@ -47,9 +47,97 @@ bool SearchKSByName(const KS& ks, std::string parametr)//Поиск по имени
 	return ks.name == parametr;
 }
 
-bool SearchKSByNinwork(const KS& ks, double parametr)//Поиск по проценту не работающих цехов
+bool SearchKSByNnowork(const KS& ks, double parametr)//Поиск по проценту не работающих цехов
 {
-	return (1 - (ks.ninwork / ks.n ))>= parametr/100;
+	return (1.0-((double)ks.ninwork / ks.n) >= parametr/100.0);
+}
+
+void selectFilterTruba(const vector<Truba>& Truboprovod, int i)
+{
+	switch (i)
+	{
+	case 1:
+	{
+		bool f=false;
+		cout << "Введите имя трубы\n";
+		string name;
+		cin.get();
+		getline(cin, name);
+		for (auto& i : SearchTrubaByFilter(Truboprovod, SearchTrubaByName, name))
+		{
+			cout << Truboprovod[i];
+			f = true;
+		}
+		if (!f)
+		{
+			cout << "Нет труб с таким именем\n";
+		}
+		break;
+	}
+	case 2:
+	{
+		bool f=false;
+		cout << "Поиск труб находящихся в ремонте\n";
+		for (auto& i : SearchTrubaByFilter(Truboprovod, SearchTrubaBySostoyanie, false))
+		{
+			cout << Truboprovod[i];
+			f = true;
+		}
+		if (!f)
+		{
+			cout << "Нет труб в ремонте\n";
+		}
+		break;
+	}
+	default:
+	{
+		cout << "Данные введены не корректно. Попробуйте ещё раз.\n";
+	}
+	}
+}
+
+void selectFilterKS(const vector<KS>& Zavod, int i)
+{
+	switch (i)
+	{
+	case 1:
+	{
+		bool f = false;
+		cout << "Введите имя компрессорной станции\n";
+		string name;
+		cin.get();
+		getline(cin, name);
+		for (auto& i : SearchKSByFilter(Zavod, SearchKSByName, name))
+		{
+			cout << Zavod[i];
+			f = true;
+		}
+		if (!f)
+		{
+			cout << "Нет компрессорных станций с таким именем\n";
+		}
+		break;
+	}
+	case 2:
+	{
+		bool f = false;
+		double procent = getint("Введите процент незадействованных цехов", 1, 100);
+		for (auto& i : SearchKSByFilter(Zavod, SearchKSByNnowork, procent))
+		{
+			cout << Zavod[i];
+			f = true;
+		}
+		if (!f)
+		{
+			cout << "Нет компрессорных станций с данным процентом незадействованых цехов\n";
+		}
+		break;
+	}
+	default:
+	{
+		cout << "Данные введены не корректно. Попробуйте ещё раз.\n";
+	}
+	}
 }
 
 void printmenu()
@@ -61,8 +149,10 @@ void printmenu()
 	cout << "5-Редактировать колличество цехов в работе компрессорной станции\n";
 	cout << "6-Сохранить данные файл\n";
 	cout << "7-Считать данные из файла\n";
-	cout << "8-Удалить трубу\n";
-	cout << "9-Удалить компрессорную станцию\n";
+	cout << "8-Найти трубу\n";
+	cout << "9-Найти компрессорную станцию\n";
+	cout << "10-Удалить трубу\n";
+	cout << "11-Удалить компрессорную станцию\n";
 	cout << "0-Выход\n";
 }
 int main()
@@ -220,10 +310,28 @@ int main()
 		}
 		case 8:
 		{
+			cout << "Фильтры:\n";
+			cout << "1-По имени\n";
+			cout << "2-По состоянию в ремонте\n";
+			i = getint("Введите номер фильтра", 1, 2);
+			selectFilterTruba(Truboprovod, i);
+			break;
+		}
+	    case 9:
+		{
+			cout << "Фильтры:\n";
+			cout << "1-По имени\n";
+			cout << "2-По проценту незадействованых цехов\n";
+			i = getint("Введите номер фильтра", 1, 2);
+			selectFilterKS(Zavod, i);
+			break;
+		}
+		case 10:
+		{
 			deleteTruba(Truboprovod);
 			break;
 		}
-		case 9:
+		case 11:
 		{
 			deleteKS(Zavod);
 			break;
