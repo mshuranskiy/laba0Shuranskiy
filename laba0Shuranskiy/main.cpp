@@ -5,7 +5,53 @@
 #include "Truba.h";
 #include "KS.h";
 #include "utils.h";
+
 using namespace std;
+
+Truba& selectTruba(vector<Truba>& Truboprovod)//Выбираем нужную трубу
+{
+	unsigned int index = getint("Введите номер трубы", (size_t)1u, Truboprovod.size());
+	return Truboprovod[index - 1];
+}
+
+void deleteTruba(vector<Truba>& Truboprovod)//Удаление трубы
+{
+	unsigned int index = getint("Введите номер трубы", (size_t)1u, Truboprovod.size());
+	Truboprovod.erase(Truboprovod.begin() + index - 1);
+}
+
+//bool SearchTrubaByName(const Truba& t, std::string parametr)//Поиск по имени
+//{
+//	return t.name == parametr;
+//}
+//
+//bool SearchTrubaBySostoyanie(const Truba& t, bool parametr)//Поиск по стостоянию
+//{
+//	return t.sostoyanie == parametr;
+//}
+
+KS& selectKS(vector<KS>& Zavod)//Выбор компрессорной станции
+{
+	unsigned int index = getint("Введите номер компрессорной станции", (size_t)1u, Zavod.size());
+	return Zavod[index - 1];
+}
+
+void deleteKS(vector<KS>& Zavod)//Удаление компрессорной станции
+{
+	unsigned int index = getint("Введите номер трубы", (size_t)1u, Zavod.size());
+	Zavod.erase(Zavod.begin() + index - 1);
+}
+
+//bool SearchKSByName(const KS& ks, std::string parametr)//Поиск по имени
+//{
+//	return ks.name == parametr;
+//}
+//
+//bool SearchKSByNinwork(const KS& ks, double parametr)//Поиск по проценту не работающих цехов
+//{
+//	return 1 - ks.n / ks.ninwork >= parametr;
+//}
+
 void printmenu()
 {
 	cout << "1-Добавить трубу\n";
@@ -33,12 +79,16 @@ int main()
 		{
 		case 1:
 		{
-			Truboprovod.push_back(Truba::creatTruba());
+			Truba t;
+			cin >> t;
+			Truboprovod.push_back(t);
 			break;
 		}
 		case 2:
 		{
-			Zavod.push_back(KS::creatKS());
+			KS ks;
+			cin >> ks;
+			Zavod.push_back(ks);
 			break;
 		}
 		case 3:
@@ -49,7 +99,7 @@ int main()
 				{
 					for (auto& infotruba : Truboprovod)
 					{
-						printTruba(infotruba);
+						cout << infotruba;
 					}
 				}
 				else
@@ -60,7 +110,7 @@ int main()
 				{
 					for (auto& infoKS : Zavod)
 					{
-						printKS(infoKS);
+						cout << infoKS;
 					}
 				}
 				else
@@ -80,7 +130,7 @@ int main()
 		{
 			if (Truboprovod.size()>0)
 			{
-				editTruba(selectTruba(Truboprovod));
+				selectTruba(Truboprovod).editTruba();
 				break;
 			}
 			else
@@ -93,7 +143,7 @@ int main()
 		{
 			if (Zavod.size()>0)
 			{
-				editKS(selectKS(Zavod));
+				selectKS(Zavod).editKS();
 				break;
 			}
 			else
@@ -152,15 +202,15 @@ int main()
 				{
 					while (countt--)
 					{
-						infotruba = Truba::inputfileTruba(fin);
+						infotruba.inputfileTruba(fin);
 						Truboprovod.push_back(infotruba);
 					}
 				}
-				if (countks)
+				if (countks>0)
 				{
 					while (countks--)
 					{
-						infoKS = KS::inputfileKS(fin);
+						infoKS.inputfileKS(fin);
 						Zavod.push_back(infoKS);
 					}
 				}
