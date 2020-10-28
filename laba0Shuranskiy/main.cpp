@@ -20,15 +20,15 @@ void deleteTruba(vector<Truba>& Truboprovod)//Удаление трубы
 	Truboprovod.erase(Truboprovod.begin() + index - 1);
 }
 
-//bool SearchTrubaByName(const Truba& t, std::string parametr)//Поиск по имени
-//{
-//	return t.name == parametr;
-//}
-//
-//bool SearchTrubaBySostoyanie(const Truba& t, bool parametr)//Поиск по стостоянию
-//{
-//	return t.sostoyanie == parametr;
-//}
+bool SearchTrubaByName(const Truba& t, std::string parametr)//Поиск по имени
+{
+	return t.name == parametr;
+}
+
+bool SearchTrubaBySostoyanie(const Truba& t, bool parametr)//Поиск по стостоянию
+{
+	return t.sostoyanie == parametr;
+}
 
 KS& selectKS(vector<KS>& Zavod)//Выбор компрессорной станции
 {
@@ -42,21 +42,21 @@ void deleteKS(vector<KS>& Zavod)//Удаление компрессорной станции
 	Zavod.erase(Zavod.begin() + index - 1);
 }
 
-//bool SearchKSByName(const KS& ks, std::string parametr)//Поиск по имени
-//{
-//	return ks.name == parametr;
-//}
-//
-//bool SearchKSByNinwork(const KS& ks, double parametr)//Поиск по проценту не работающих цехов
-//{
-//	return 1 - ks.n / ks.ninwork >= parametr;
-//}
+bool SearchKSByName(const KS& ks, std::string parametr)//Поиск по имени
+{
+	return ks.name == parametr;
+}
+
+bool SearchKSByNinwork(const KS& ks, double parametr)//Поиск по проценту не работающих цехов
+{
+	return (1 - (ks.ninwork / ks.n ))>= parametr/100;
+}
 
 void printmenu()
 {
 	cout << "1-Добавить трубу\n";
 	cout << "2-Добавить компрессорную станцию\n";
-	cout << "3-Вывести данные\n";
+	cout << "3-Вывести данные на экран\n";
 	cout << "4-Редактировать состояние трубы\n";
 	cout << "5-Редактировать колличество цехов в работе компрессорной станции\n";
 	cout << "6-Сохранить данные файл\n";
@@ -166,14 +166,14 @@ int main()
 					{
 						for (auto& infotruba : Truboprovod)
 						{
-							savefileTruba(fout, infotruba);
+							infotruba.savefileTruba(fout);
 						}
 					}
 					if (Zavod.size() > 0)
 					{
 						for (auto& infoKS : Zavod)
 						{
-							savefileKS(fout, infoKS);
+							infoKS.savefileKS(fout);
 						}
 					}
 					fout.close();

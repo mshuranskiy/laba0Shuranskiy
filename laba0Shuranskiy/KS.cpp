@@ -34,23 +34,20 @@ void KS::editKS()//Изменение цоехов в работе
 	ninwork = getint("Введите количество цехов в работе", 0, n);
 }
 
-void savefileKS(std::ofstream& fout, const KS& ks)//Сохранение информации о компрессорной станции
+void KS::savefileKS(std::ofstream& fout)//Сохранение информации о компрессорной станции
 {
-	fout << ks.id << endl;
-	fout << ks.name << endl;
-	fout << ks.n << endl;
-	fout << ks.ninwork << endl;
-	fout << ks.efect << endl;
+	fout << id << endl;
+	fout << name << endl;
+	fout << n << endl;
+	fout << ninwork << endl;
+	fout << efect << endl;
 }
 
-KS KS::inputfileKS(std::ifstream& fin)//Считывание информации о компрессорной станции
+void KS::inputfileKS(std::ifstream& fin)//Считывание информации о компрессорной станции
 {
-	KS ks;
-	fin >> ks.id;
-	fin >> ks.name;
-	fin >> ks.n;
-	fin >> ks.ninwork;
-	fin >> ks.efect;
-	return ks;
+	fin >> id;
+	fin >> name;
+	fin >> n;
+	fin >> ninwork;
+	fin >> efect;
 }
-

@@ -34,22 +34,20 @@ void Truba::editTruba()//Отправить трубу в ремонт
 	sostoyanie = !sostoyanie;
 }
 
-void savefileTruba(std::ofstream& fout, const Truba& t)//Сохранение информации о трубе
+void Truba::savefileTruba(std::ofstream& fout)//Сохранение информации о трубе
 {
-	fout << t.id << endl;
-	fout << t.name << endl;
-	fout << t.dlina << endl;
-	fout << t.diametr << endl;
-	fout << t.sostoyanie << endl;
+	fout << id << endl;
+	fout << name << endl;
+	fout << dlina << endl;
+	fout << diametr << endl;
+	fout << sostoyanie << endl;
 }
 
-Truba Truba::inputfileTruba(std::ifstream& fin)//Считывание информации о трубе
+void Truba::inputfileTruba(std::ifstream& fin)//Считывание информации о трубе
 {
-	Truba t;
 	fin >> id;
 	fin >> name;
 	fin >> dlina;
 	fin >> diametr;
 	fin >> sostoyanie;
-	return t;
 }

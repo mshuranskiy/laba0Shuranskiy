@@ -47,13 +47,13 @@ vector<int> SearchTrubaByFilter(const vector<Truba>& Truboprovod, Filtert<T> f, 
 template <typename T>
 using Filterks = bool(*)(const KS& t, T parametr);
 template <typename T>
-vector<int> SearchTrubaByFilter(const vector<KS>& Zavod, Filterks<T> f, T parametr)
+vector<int> SearchKSByFilter(const vector<KS>& Zavod, Filterks<T> f, T parametr)
 {
 	vector<int> result;
 	int i = 0;
-	for (auto& t : Zavod)
+	for (auto& ks : Zavod)
 	{
-		if (f(t, parametr))
+		if (f(ks, parametr))
 		{
 			result.push_back(i);
 		}
