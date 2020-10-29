@@ -140,6 +140,65 @@ void selectFilterKS(const vector<KS>& Zavod, int i)
 	}
 }
 
+void changeTrubaSostoyanie(vector<Truba>& Truboprovod, int i)
+{
+	switch (i)
+	{
+	case 1:
+	{
+		for (auto& infotruba : Truboprovod)
+		{
+			if (infotruba.sostoyanie == true)
+			{
+				infotruba.editTruba();
+			}
+		}
+		break;
+	}
+	case 2:
+	{
+		int countt = getint("Введите количество труб", (size_t)1, Truboprovod.size());
+		while (countt--)
+		{
+			int n = getint("Введите номер трубы", (size_t)1, Truboprovod.size());
+			if (Truboprovod[n].sostoyanie == true)
+			{
+				Truboprovod[n].editTruba();
+			}
+		}
+		break;
+	}
+	case 3:
+	{
+		for (auto& infotruba : Truboprovod)
+		{
+			if (infotruba.sostoyanie == false)
+			{
+				infotruba.editTruba();
+			}
+		}
+		break;
+	}
+	case 4:
+	{
+		int countt = getint("Введите количество труб", (size_t)1, Truboprovod.size());
+		while (countt--)
+		{
+			int n = getint("Введите номер трубы", (size_t)1, Truboprovod.size());
+			if (Truboprovod[n].sostoyanie == false)
+			{
+				Truboprovod[n].editTruba();
+			}
+		}
+		break;
+	}
+	default:
+	{
+		cout << "Данные введены не корректно. Попробуйте ещё раз.\n";
+	}
+	}
+}
+
 void printmenu()
 {
 	cout << "1-Добавить трубу\n";
@@ -220,7 +279,13 @@ int main()
 		{
 			if (Truboprovod.size()>0)
 			{
-				selectTruba(Truboprovod).editTruba();
+				cout << "Варианты редактирования:\n";
+				cout << "1-Отправить все трубы в ремонт\n";
+				cout << "2-Отправить конкретные трубы в ремонт\n";
+				cout << "3-Починить все трубы\n";
+				cout << "4-Починить конкретные трубы\n";
+				int i = getint("Введите вариант редактирования", 1, 4);
+				changeTrubaSostoyanie(Truboprovod, i);
 				break;
 			}
 			else
