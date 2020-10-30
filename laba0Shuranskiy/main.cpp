@@ -146,48 +146,49 @@ void changeTrubaSostoyanie(vector<Truba>& Truboprovod, int i)
 	{
 	case 1:
 	{
-		for (auto& infotruba : Truboprovod)
+		for (int i = 0; i < Truboprovod.size(); i++)
 		{
-			if (infotruba.sostoyanie == true)
+			if (Truboprovod[i].sostoyanie == false)
 			{
-				infotruba.editTruba();
+				Truboprovod[i].editTruba();
 			}
 		}
+		
 		break;
 	}
 	case 2:
 	{
-		int countt = getint("¬ведите количество труб", (size_t)1, Truboprovod.size());
+		unsigned int countt = getint("¬ведите количество труб", (size_t)1u, Truboprovod.size());
 		while (countt--)
 		{
-			int n = getint("¬ведите номер трубы", (size_t)1, Truboprovod.size());
-			if (Truboprovod[n].sostoyanie == true)
+			unsigned int n = getint("¬ведите номер трубы", (size_t)1u, Truboprovod.size());
+			if (Truboprovod[n-1].sostoyanie == false)
 			{
-				Truboprovod[n].editTruba();
+				Truboprovod[n-1].editTruba();
 			}
 		}
 		break;
 	}
 	case 3:
 	{
-		for (auto& infotruba : Truboprovod)
+		for (int i = 0; i < Truboprovod.size(); i++)
 		{
-			if (infotruba.sostoyanie == false)
+			if (Truboprovod[i].sostoyanie == true)
 			{
-				infotruba.editTruba();
+				Truboprovod[i].editTruba();
 			}
 		}
 		break;
 	}
 	case 4:
 	{
-		int countt = getint("¬ведите количество труб", (size_t)1, Truboprovod.size());
+		unsigned int countt = getint("¬ведите количество труб", (size_t)1u, Truboprovod.size());
 		while (countt--)
 		{
-			int n = getint("¬ведите номер трубы", (size_t)1, Truboprovod.size());
-			if (Truboprovod[n].sostoyanie == false)
+			unsigned int n = getint("¬ведите номер трубы", (size_t)1u, Truboprovod.size());
+			if (Truboprovod[n-1].sostoyanie == true)
 			{
-				Truboprovod[n].editTruba();
+				Truboprovod[n-1].editTruba();
 			}
 		}
 		break;
