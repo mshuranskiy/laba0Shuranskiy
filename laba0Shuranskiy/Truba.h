@@ -3,11 +3,11 @@
 #include <iostream>
 class Truba
 {
-	static unsigned int IDt;
 	unsigned int id;//Идентификатор
 	double dlina;//Длина
 	int diametr;//Диаметр
 public:
+	static unsigned int IDt;
 	std::string name;//Имя
 	bool sostoyanie;//Состояние в ремонте или нет
 	friend std::istream& operator >> (std::istream& in, Truba& t);//Создание трубы

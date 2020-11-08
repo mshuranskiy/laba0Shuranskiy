@@ -7,6 +7,7 @@
 #include "utils.h";
 
 using namespace std;
+//unsigned int Truba::IDt;
 
 Truba& selectTruba(vector<Truba>& Truboprovod)//Выбираем нужную трубу
 {
@@ -318,6 +319,8 @@ int main()
 				{
 					fout << Truboprovod.size()<<endl;
 					fout << Zavod.size()<< endl;
+					fout << Truba::IDt<< endl;
+					fout << KS::IDks<< endl;
 					if (Truboprovod.size() > 0)
 					{
 						for (auto& infotruba : Truboprovod)
@@ -352,6 +355,8 @@ int main()
 				int countks;
 				fin >> countt;
 				fin >> countks;
+				fin >> Truba::IDt;
+				fin >> KS::IDks;
 				Truba infotruba;
 				KS infoKS;
 				if (countt>0)

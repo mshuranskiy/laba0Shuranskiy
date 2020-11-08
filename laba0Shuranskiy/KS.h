@@ -3,10 +3,10 @@
 #include <vector>
 class KS
 {
-	static unsigned int IDks;
 	unsigned int id;//идентификатор
 	int efect;//Эффективность
 public:
+	static unsigned int IDks;
 	std::string name;//Имя
 	int n;//Количество цехов
 	int ninwork;//Количсевто цехов в работе
