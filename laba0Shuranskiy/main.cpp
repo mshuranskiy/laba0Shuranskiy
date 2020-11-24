@@ -40,7 +40,7 @@ KS& selectKS(map<int,KS>& Zavod)//Выбор компрессорной станции
 
 void deleteKS(map<int,KS>& Zavod)//Удаление компрессорной станции
 {
-	unsigned int index = getint("Введите номер трубы", (size_t)1u, Zavod.size());
+	unsigned int index = getint("Введите номер компрессорной станции", (size_t)1u, Zavod.size());
 	Zavod.erase(index - 1);
 }
 
@@ -54,7 +54,7 @@ bool SearchKSByNnowork(const KS& ks, double parametr)//Поиск по проценту не рабо
 	return (1.0-((double)ks.ninwork / ks.n) >= parametr/100.0);
 }
 
-bool selectFilterTruba(const map<int,Truba>& Truboprovod, map<int,Truba>& infotruba)
+bool selectFilterTruba(map<int,Truba>& Truboprovod, map<int,Truba>& infotruba)
 {
 	cout << "Фильтры:\n";
 	cout << "1-По имени\n";
@@ -96,7 +96,7 @@ bool selectFilterTruba(const map<int,Truba>& Truboprovod, map<int,Truba>& infotr
 	}
 }
 
-bool selectFilterKS(const map<int,KS>& Zavod, map<int,KS>& infoks)
+bool selectFilterKS(map<int,KS>& Zavod, map<int,KS>& infoks)
 {
 	cout << "Фильтры:\n";
 	cout << "1-По имени\n";
@@ -224,11 +224,11 @@ int main()
 	setlocale(LC_ALL, "Russian");
 	map <int, Truba> Truboprovod;
 	map <int, KS> Zavod;
+	int keytruba = 0;
+	int keyks = 0;
 	while (1)
 	{
 		printmenu();
-		int keytruba=0;
-		int keyks=0;
 		int i;
 		i=getint("Введите номер действия",0,10000);
 		switch (i)

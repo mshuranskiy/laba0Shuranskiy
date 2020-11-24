@@ -2,6 +2,7 @@
 #include <string>
 #include <iostream>
 #include <vector>
+#include <map>
 #include "KS.h"
 #include "Truba.h"
 using namespace std;
@@ -29,7 +30,7 @@ T getint(string text, T border1, T border2)
 template <typename T>
 using Filtert = bool(*)(const Truba& t, T parametr);
 template <typename T>
-vector<int> SearchTrubaByFilter(const map<int,Truba>& Truboprovod, Filtert<T> f, T parametr)
+vector<int> SearchTrubaByFilter(map<int,Truba>& Truboprovod, Filtert<T> f, T parametr)
 {
 	vector<int> result;
 	int i = 0;
@@ -47,7 +48,7 @@ vector<int> SearchTrubaByFilter(const map<int,Truba>& Truboprovod, Filtert<T> f,
 template <typename T>
 using Filterks = bool(*)(const KS& t, T parametr);
 template <typename T>
-vector<int> SearchKSByFilter(const map<int,KS>& Zavod, Filterks<T> f, T parametr)
+vector<int> SearchKSByFilter(map<int,KS>& Zavod, Filterks<T> f, T parametr)
 {
 	vector<int> result;
 	int i = 0;
