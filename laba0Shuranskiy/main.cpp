@@ -2,6 +2,7 @@
 #include <fstream>
 #include <string>
 #include <vector>
+#include <map>
 #include "Truba.h";
 #include "KS.h";
 #include "utils.h";
@@ -9,16 +10,16 @@
 using namespace std;
 //unsigned int Truba::IDt;
 
-Truba& selectTruba(vector<Truba>& Truboprovod)//Выбираем нужную трубу
+Truba& selectTruba(map<int,Truba>& Truboprovod)//Выбираем нужную трубу
 {
 	unsigned int index = getint("Введите номер трубы", (size_t)1u, Truboprovod.size());
 	return Truboprovod[index - 1];
 }
 
-void deleteTruba(vector<Truba>& Truboprovod)//Удаление трубы
+void deleteTruba(map<int,Truba>& Truboprovod)//Удаление трубы
 {
 	unsigned int index = getint("Введите номер трубы", (size_t)1u, Truboprovod.size());
-	Truboprovod.erase(Truboprovod.begin() + index - 1);
+	Truboprovod.erase(index - 1);
 }
 
 bool SearchTrubaByName(const Truba& t, std::string parametr)//Поиск по имени
@@ -31,16 +32,16 @@ bool SearchTrubaBySostoyanie(const Truba& t, bool parametr)//Поиск по стостоянию
 	return t.sostoyanie == parametr;
 }
 
-KS& selectKS(vector<KS>& Zavod)//Выбор компрессорной станции
+KS& selectKS(map<int,KS>& Zavod)//Выбор компрессорной станции
 {
 	unsigned int index = getint("Введите номер компрессорной станции", (size_t)1u, Zavod.size());
 	return Zavod[index - 1];
 }
 
-void deleteKS(vector<KS>& Zavod)//Удаление компрессорной станции
+void deleteKS(map<int,KS>& Zavod)//Удаление компрессорной станции
 {
 	unsigned int index = getint("Введите номер трубы", (size_t)1u, Zavod.size());
-	Zavod.erase(Zavod.begin() + index - 1);
+	Zavod.erase(index - 1);
 }
 
 bool SearchKSByName(const KS& ks, std::string parametr)//Поиск по имени
@@ -53,8 +54,12 @@ bool SearchKSByNnowork(const KS& ks, double parametr)//Поиск по проценту не рабо
 	return (1.0-((double)ks.ninwork / ks.n) >= parametr/100.0);
 }
 
-void selectFilterTruba(const vector<Truba>& Truboprovod, int i)
+bool selectFilterTruba(const map<int,Truba>& Truboprovod, map<int,Truba>& infotruba)
 {
+	cout << "Фильтры:\n";
+	cout << "1-По имени\n";
+	cout << "2-По состоянию в ремонте\n";
+	int i = getint("Введите номер фильтра", 1, 2);
 	switch (i)
 	{
 	case 1:
@@ -66,28 +71,22 @@ void selectFilterTruba(const vector<Truba>& Truboprovod, int i)
 		getline(cin, name);
 		for (auto& i : SearchTrubaByFilter(Truboprovod, SearchTrubaByName, name))
 		{
-			cout << Truboprovod[i];
+			infotruba[i]=Truboprovod[i];
 			f = true;
 		}
-		if (!f)
-		{
-			cout << "Нет труб с таким именем\n";
-		}
+		return f;
 		break;
 	}
 	case 2:
 	{
 		bool f=false;
 		cout << "Поиск труб находящихся в ремонте\n";
-		for (auto& i : SearchTrubaByFilter(Truboprovod, SearchTrubaBySostoyanie, false))
+		for (auto& i : SearchTrubaByFilter(Truboprovod, SearchTrubaBySostoyanie, true))
 		{
-			cout << Truboprovod[i];
+			infotruba[i] = Truboprovod[i];
 			f = true;
 		}
-		if (!f)
-		{
-			cout << "Нет труб в ремонте\n";
-		}
+		return f;
 		break;
 	}
 	default:
@@ -97,8 +96,12 @@ void selectFilterTruba(const vector<Truba>& Truboprovod, int i)
 	}
 }
 
-void selectFilterKS(const vector<KS>& Zavod, int i)
+bool selectFilterKS(const map<int,KS>& Zavod, map<int,KS>& infoks)
 {
+	cout << "Фильтры:\n";
+	cout << "1-По имени\n";
+	cout << "2-По проценту незадействованых цехов\n";
+	int i = getint("Введите номер фильтра", 1, 2);
 	switch (i)
 	{
 	case 1:
@@ -110,13 +113,10 @@ void selectFilterKS(const vector<KS>& Zavod, int i)
 		getline(cin, name);
 		for (auto& i : SearchKSByFilter(Zavod, SearchKSByName, name))
 		{
-			cout << Zavod[i];
+			infoks[i]=Zavod[i];
 			f = true;
 		}
-		if (!f)
-		{
-			cout << "Нет компрессорных станций с таким именем\n";
-		}
+		return f;
 		break;
 	}
 	case 2:
@@ -125,13 +125,10 @@ void selectFilterKS(const vector<KS>& Zavod, int i)
 		double procent = getint("Введите процент незадействованных цехов", 1, 100);
 		for (auto& i : SearchKSByFilter(Zavod, SearchKSByNnowork, procent))
 		{
-			cout << Zavod[i];
-			f = true;
+			infoks[i]=Zavod[i];
+			f = true;	
 		}
-		if (!f)
-		{
-			cout << "Нет компрессорных станций с данным процентом незадействованых цехов\n";
-		}
+		return f;
 		break;
 	}
 	default:
@@ -141,8 +138,14 @@ void selectFilterKS(const vector<KS>& Zavod, int i)
 	}
 }
 
-void changeTrubaSostoyanie(vector<Truba>& Truboprovod, int i)
+void changeTrubaSostoyanie(map<int,Truba>& Truboprovod)
 {
+	cout << "Варианты редактирования:\n";
+	cout << "1-Отправить все трубы в ремонт\n";
+	cout << "2-Отправить конкретные трубы в ремонт\n";
+	cout << "3-Починить все трубы\n";
+	cout << "4-Починить конкретные трубы\n";
+	int i = getint("Введите вариант редактирования", 1, 4);
 	switch (i)
 	{
 	case 1:
@@ -219,11 +222,13 @@ void printmenu()
 int main()
 {
 	setlocale(LC_ALL, "Russian");
-	vector <Truba> Truboprovod;
-	vector <KS> Zavod;
+	map <int, Truba> Truboprovod;
+	map <int, KS> Zavod;
 	while (1)
 	{
 		printmenu();
+		int keytruba=0;
+		int keyks=0;
 		int i;
 		i=getint("Введите номер действия",0,10000);
 		switch (i)
@@ -232,14 +237,16 @@ int main()
 		{
 			Truba t;
 			cin >> t;
-			Truboprovod.push_back(t);
+			Truboprovod[keytruba] = t;
+			keytruba += 1;
 			break;
 		}
 		case 2:
 		{
 			KS ks;
 			cin >> ks;
-			Zavod.push_back(ks);
+			Zavod[keyks]=ks;
+			keyks += 1;
 			break;
 		}
 		case 3:
@@ -250,7 +257,7 @@ int main()
 				{
 					for (auto& infotruba : Truboprovod)
 					{
-						cout << infotruba;
+						cout << infotruba.second;
 					}
 				}
 				else
@@ -261,7 +268,7 @@ int main()
 				{
 					for (auto& infoKS : Zavod)
 					{
-						cout << infoKS;
+						cout << infoKS.second;
 					}
 				}
 				else
@@ -281,13 +288,7 @@ int main()
 		{
 			if (Truboprovod.size()>0)
 			{
-				cout << "Варианты редактирования:\n";
-				cout << "1-Отправить все трубы в ремонт\n";
-				cout << "2-Отправить конкретные трубы в ремонт\n";
-				cout << "3-Починить все трубы\n";
-				cout << "4-Починить конкретные трубы\n";
-				int i = getint("Введите вариант редактирования", 1, 4);
-				changeTrubaSostoyanie(Truboprovod, i);
+				changeTrubaSostoyanie(Truboprovod);
 				break;
 			}
 			else
@@ -325,14 +326,14 @@ int main()
 					{
 						for (auto& infotruba : Truboprovod)
 						{
-							infotruba.savefileTruba(fout);
+							infotruba.second.savefileTruba(fout);
 						}
 					}
 					if (Zavod.size() > 0)
 					{
 						for (auto& infoKS : Zavod)
 						{
-							infoKS.savefileKS(fout);
+							infoKS.second.savefileKS(fout);
 						}
 					}
 					fout.close();
@@ -357,22 +358,23 @@ int main()
 				fin >> countks;
 				fin >> Truba::IDt;
 				fin >> KS::IDks;
-				Truba infotruba;
-				KS infoKS;
+				
 				if (countt>0)
 				{
-					while (countt--)
+					for (int i=0;i<countt;i++)
 					{
+						Truba infotruba;
 						infotruba.inputfileTruba(fin);
-						Truboprovod.push_back(infotruba);
+						Truboprovod[i]=infotruba;
 					}
 				}
 				if (countks>0)
 				{
-					while (countks--)
+					for (int i = 0; i < countks; i++)
 					{
+						KS infoKS;
 						infoKS.inputfileKS(fin);
-						Zavod.push_back(infoKS);
+						Zavod[i]=infoKS;
 					}
 				}
 				fin.close();
@@ -381,20 +383,28 @@ int main()
 		}
 		case 8:
 		{
-			cout << "Фильтры:\n";
-			cout << "1-По имени\n";
-			cout << "2-По состоянию в ремонте\n";
-			i = getint("Введите номер фильтра", 1, 2);
-			selectFilterTruba(Truboprovod, i);
+			map<int,Truba> infotruba;
+			bool f=selectFilterTruba(Truboprovod, infotruba);
+			if (f)
+			{
+				for (auto& i : infotruba)
+					cout << i.second ;
+			}
+			else
+				cout << "Таких труб нет\n";
 			break;
 		}
 	    case 9:
 		{
-			cout << "Фильтры:\n";
-			cout << "1-По имени\n";
-			cout << "2-По проценту незадействованых цехов\n";
-			i = getint("Введите номер фильтра", 1, 2);
-			selectFilterKS(Zavod, i);
+			map<int,KS> infoks;
+			bool f=selectFilterKS(Zavod, infoks);
+			if (f)
+			{
+				for (auto& i : infoks)
+					cout << i.second ;
+			}
+			else
+				cout << "Таких компрессорных станций нет\n";
 			break;
 		}
 		case 10:

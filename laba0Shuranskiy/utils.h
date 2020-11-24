@@ -13,7 +13,7 @@ T getint(string text, T border1, T border2)
 	{
 		cout << text << endl;
 		cin >> value;
-		if (cin.fail() || cin.eof() || value < border1 || value >border2)
+		if (cin.fail() || cin.peek() != '\n' || value < border1 || value >border2)
 		{
 			cin.clear();
 			cin.ignore(32767, '\n');
@@ -29,13 +29,13 @@ T getint(string text, T border1, T border2)
 template <typename T>
 using Filtert = bool(*)(const Truba& t, T parametr);
 template <typename T>
-vector<int> SearchTrubaByFilter(const vector<Truba>& Truboprovod, Filtert<T> f, T parametr)
+vector<int> SearchTrubaByFilter(const map<int,Truba>& Truboprovod, Filtert<T> f, T parametr)
 {
 	vector<int> result;
 	int i = 0;
 	for (auto& t : Truboprovod)
 	{
-		if (f(t, parametr))
+		if (f(t.second, parametr))
 		{
 			result.push_back(i);
 		}
@@ -47,13 +47,13 @@ vector<int> SearchTrubaByFilter(const vector<Truba>& Truboprovod, Filtert<T> f, 
 template <typename T>
 using Filterks = bool(*)(const KS& t, T parametr);
 template <typename T>
-vector<int> SearchKSByFilter(const vector<KS>& Zavod, Filterks<T> f, T parametr)
+vector<int> SearchKSByFilter(const map<int,KS>& Zavod, Filterks<T> f, T parametr)
 {
 	vector<int> result;
 	int i = 0;
 	for (auto& ks : Zavod)
 	{
-		if (f(ks, parametr))
+		if (f(ks.second, parametr))
 		{
 			result.push_back(i);
 		}
