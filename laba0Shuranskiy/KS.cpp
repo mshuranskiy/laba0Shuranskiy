@@ -51,3 +51,23 @@ void KS::inputfileKS(std::ifstream& fin)//—читывание информации о компрессорной 
 	fin >> ninwork;
 	fin >> efect;
 }
+
+std::string KS::getname()
+{
+	return name;
+}
+
+int KS::getn()
+{
+	return n;
+}
+
+int KS::getninwork()
+{
+	return ninwork;
+}
+
+unsigned int KS::getid()
+{
+	return id;
+}

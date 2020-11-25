@@ -23,14 +23,14 @@ void deleteTruba(map<int,Truba>& Truboprovod)//Удаление трубы
 	Truboprovod.erase(index - 1);
 }
 
-bool SearchTrubaByName(const Truba& t, std::string parametr)//Поиск по имени
+bool SearchTrubaByName(Truba& t, std::string parametr)//Поиск по имени
 {
-	return t.name == parametr;
+	return t.getname() == parametr;
 }
 
-bool SearchTrubaBySostoyanie(const Truba& t, bool parametr)//Поиск по стостоянию
+bool SearchTrubaBySostoyanie(Truba& t, bool parametr)//Поиск по стостоянию
 {
-	return t.sostoyanie == parametr;
+	return t.getsostoyanie() == parametr;
 }
 
 KS& selectKS(map<int,KS>& Zavod)//Выбор компрессорной станции
@@ -45,14 +45,14 @@ void deleteKS(map<int,KS>& Zavod)//Удаление компрессорной станции
 	Zavod.erase(index - 1);
 }
 
-bool SearchKSByName(const KS& ks, std::string parametr)//Поиск по имени
+bool SearchKSByName(KS& ks, std::string parametr)//Поиск по имени
 {
-	return ks.name == parametr;
+	return ks.getname() == parametr;
 }
 
-bool SearchKSByNnowork(const KS& ks, double parametr)//Поиск по проценту не работающих цехов
+bool SearchKSByNnowork(KS& ks, double parametr)//Поиск по проценту не работающих цехов
 {
-	return (1.0-((double)ks.ninwork / ks.n) >= parametr/100.0);
+	return (1.0-((double)ks.getninwork() / ks.getn()) >= parametr/100.0);
 }
 
 set<int> selectFilterTruba(map<int,Truba>& Truboprovod)
@@ -155,7 +155,7 @@ void changeTrubaSostoyanie(map<int,Truba>& Truboprovod)
 	{
 		for (int i = 0; i < Truboprovod.size(); i++)
 		{
-			if (Truboprovod[i].sostoyanie == false)
+			if (Truboprovod[i].getsostoyanie() == false)
 			{
 				Truboprovod[i].editTruba();
 			}
@@ -172,7 +172,7 @@ void changeTrubaSostoyanie(map<int,Truba>& Truboprovod)
 				break;
 			else
 			{
-				if (Truboprovod[n - 1].sostoyanie == false)
+				if (Truboprovod[n - 1].getsostoyanie() == false)
 				{
 					Truboprovod[n - 1].editTruba();
 				}
@@ -186,7 +186,7 @@ void changeTrubaSostoyanie(map<int,Truba>& Truboprovod)
 	{
 		for (int i = 0; i < Truboprovod.size(); i++)
 		{
-			if (Truboprovod[i].sostoyanie == true)
+			if (Truboprovod[i].getsostoyanie() == true)
 			{
 				Truboprovod[i].editTruba();
 			}
@@ -202,7 +202,7 @@ void changeTrubaSostoyanie(map<int,Truba>& Truboprovod)
 				break;
 			else
 			{
-				if (Truboprovod[n - 1].sostoyanie == true)
+				if (Truboprovod[n - 1].getsostoyanie() == true)
 				{
 					Truboprovod[n - 1].editTruba();
 				}

@@ -51,3 +51,18 @@ void Truba::inputfileTruba(std::ifstream& fin)//Считывание информации о трубе
 	fin >> diametr;
 	fin >> sostoyanie;
 }
+
+std::string Truba::getname()//Возвращение имени
+{
+	return name;
+}
+
+bool Truba::getsostoyanie()//Возврщение состояния
+{
+	return sostoyanie;
+}
+
+unsigned int Truba::getid()//Возвращение id
+{
+	return id;
+}
