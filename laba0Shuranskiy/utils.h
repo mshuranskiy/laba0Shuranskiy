@@ -33,14 +33,12 @@ template <typename T>
 vector<int> SearchTrubaByFilter(map<int,Truba>& Truboprovod, Filtert<T> f, T parametr)
 {
 	vector<int> result;
-	int i = 0;
 	for (auto& t : Truboprovod)
 	{
 		if (f(t.second, parametr))
 		{
-			result.push_back(i);
+			result.push_back(t.second.getid());
 		}
-		i++;
 	}
 	return result;
 }
@@ -51,14 +49,12 @@ template <typename T>
 vector<int> SearchKSByFilter(map<int,KS>& Zavod, Filterks<T> f, T parametr)
 {
 	vector<int> result;
-	int i = 0;
 	for (auto& ks : Zavod)
 	{
 		if (f(ks.second, parametr))
 		{
-			result.push_back(i);
+			result.push_back(ks.second.getid());
 		}
-		i++;
 	}
 	return result;
 }

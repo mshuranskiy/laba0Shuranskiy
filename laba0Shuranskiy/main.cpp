@@ -9,18 +9,17 @@
 #include "utils.h";
 
 using namespace std;
-//unsigned int Truba::IDt;
 
 Truba& selectTruba(map<int,Truba>& Truboprovod)//Выбираем нужную трубу
 {
-	unsigned int index = getint("Введите номер трубы", (size_t)1u, Truboprovod.size());
-	return Truboprovod[index - 1];
+	unsigned int index = getint("Введите id трубы", 1u, Truba::IDt);
+	return Truboprovod[index];
 }
 
 void deleteTruba(map<int,Truba>& Truboprovod)//Удаление трубы
 {
-	unsigned int index = getint("Введите номер трубы", (size_t)1u, Truboprovod.size());
-	Truboprovod.erase(index - 1);
+	unsigned int index = getint("Введите id трубы", 1u, Truba::IDt);
+	Truboprovod.erase(index);
 }
 
 bool SearchTrubaByName(Truba& t, std::string parametr)//Поиск по имени
@@ -35,14 +34,14 @@ bool SearchTrubaBySostoyanie(Truba& t, bool parametr)//Поиск по стостоянию
 
 KS& selectKS(map<int,KS>& Zavod)//Выбор компрессорной станции
 {
-	unsigned int index = getint("Введите номер компрессорной станции", (size_t)1u, Zavod.size());
-	return Zavod[index - 1];
+	unsigned int index = getint("Введите id компрессорной станции", 1u, KS::IDks);
+	return Zavod[index];
 }
 
 void deleteKS(map<int,KS>& Zavod)//Удаление компрессорной станции
 {
-	unsigned int index = getint("Введите номер компрессорной станции", (size_t)1u, Zavod.size());
-	Zavod.erase(index - 1);
+	unsigned int index = getint("Введите id компрессорной станции", 1u, KS::IDks);
+	Zavod.erase(index);
 }
 
 bool SearchKSByName(KS& ks, std::string parametr)//Поиск по имени
@@ -153,11 +152,11 @@ void changeTrubaSostoyanie(map<int,Truba>& Truboprovod)
 	{
 	case 1:
 	{
-		for (int i = 0; i < Truboprovod.size(); i++)
+		for (auto& t:Truboprovod)
 		{
-			if (Truboprovod[i].getsostoyanie() == false)
+			if (Truboprovod[t.second.getid()].getsostoyanie() == false)
 			{
-				Truboprovod[i].editTruba();
+				Truboprovod[t.second.getid()].editTruba();
 			}
 		}
 		
@@ -167,14 +166,14 @@ void changeTrubaSostoyanie(map<int,Truba>& Truboprovod)
 	{
 		while (true)
 		{
-			unsigned int n = getint("Введите номер трубы или если вы хотите выйти нажмите '0'", (size_t)0, Truboprovod.size());
+			unsigned int n = getint("Введите id трубы или если вы хотите выйти нажмите '0'", 0u, Truba::IDt);
 			if (n == 0)
 				break;
 			else
 			{
-				if (Truboprovod[n - 1].getsostoyanie() == false)
+				if (Truboprovod[n].getsostoyanie() == false)
 				{
-					Truboprovod[n - 1].editTruba();
+					Truboprovod[n].editTruba();
 				}
 				else
 					cout << "Труба уже в ремонте";
@@ -184,11 +183,11 @@ void changeTrubaSostoyanie(map<int,Truba>& Truboprovod)
 	}
 	case 3:
 	{
-		for (int i = 0; i < Truboprovod.size(); i++)
+		for (auto& t:Truboprovod)
 		{
-			if (Truboprovod[i].getsostoyanie() == true)
+			if (Truboprovod[t.second.getid()].getsostoyanie() == true)
 			{
-				Truboprovod[i].editTruba();
+				Truboprovod[t.second.getid()].editTruba();
 			}
 		}
 		break;
@@ -197,14 +196,14 @@ void changeTrubaSostoyanie(map<int,Truba>& Truboprovod)
 	{
 		while (true)
 		{
-			unsigned int n = getint("Введите номер трубы или если вы хотите выйти нажмите '0'", (size_t)0, Truboprovod.size());
+			unsigned int n = getint("Введите id трубы или если вы хотите выйти нажмите '0'", 0u, Truba::IDt);
 			if (n == 0)
 				break;
 			else
 			{
-				if (Truboprovod[n - 1].getsostoyanie() == true)
+				if (Truboprovod[n].getsostoyanie() == true)
 				{
-					Truboprovod[n - 1].editTruba();
+					Truboprovod[n].editTruba();
 				}
 				else
 					cout << "Труба уже не в ремонте";
@@ -239,8 +238,6 @@ int main()
 	setlocale(LC_ALL, "Russian");
 	map <int, Truba> Truboprovod;
 	map <int, KS> Zavod;
-	int keytruba = 0;
-	int keyks = 0;
 	while (1)
 	{
 		printmenu();
@@ -252,16 +249,14 @@ int main()
 		{
 			Truba t;
 			cin >> t;
-			Truboprovod[keytruba] = t;
-			keytruba += 1;
+			Truboprovod[t.getid()] = t;
 			break;
 		}
 		case 2:
 		{
 			KS ks;
 			cin >> ks;
-			Zavod[keyks]=ks;
-			keyks += 1;
+			Zavod[ks.getid()]=ks;
 			break;
 		}
 		case 3:
@@ -372,15 +367,14 @@ int main()
 				fin >> countt;
 				fin >> countks;
 				fin >> Truba::IDt;
-				fin >> KS::IDks;
-				
+				fin >> KS::IDks;				
 				if (countt>0)
 				{
 					for (int i=0;i<countt;i++)
 					{
 						Truba infotruba;
 						infotruba.inputfileTruba(fin);
-						Truboprovod[i]=infotruba;
+						Truboprovod[infotruba.getid()]=infotruba;
 					}
 				}
 				if (countks>0)
@@ -389,7 +383,7 @@ int main()
 					{
 						KS infoKS;
 						infoKS.inputfileKS(fin);
-						Zavod[i]=infoKS;
+						Zavod[infoKS.getid()]=infoKS;
 					}
 				}
 				fin.close();

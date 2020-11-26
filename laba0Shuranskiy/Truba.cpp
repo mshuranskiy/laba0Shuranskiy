@@ -21,6 +21,7 @@ istream& operator >> (istream& in, Truba& t)//Создание трубы
 ostream& operator << (ostream& out,const Truba& t)//Вывод информации о трубе
 {
 	out << "Данные о трубе:\n";
+	out << "id трубы: " << t.id << endl;
 	out << "Имя трубы: " << t.name << endl;
 	out << "Длина трубы: " << t.dlina << " (м)" << endl;
 	out << "Диаметр турбы: " << t.diametr << " (мм)" << endl;
