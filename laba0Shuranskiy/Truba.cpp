@@ -38,6 +38,8 @@ void Truba::editTruba()//Отправить трубу в ремонт
 void Truba::savefileTruba(std::ofstream& fout)//Сохранение информации о трубе
 {
 	fout << id << endl;
+	fout << inputks << endl;
+	fout << outputks << endl;
 	fout << name << endl;
 	fout << dlina << endl;
 	fout << diametr << endl;
@@ -47,6 +49,8 @@ void Truba::savefileTruba(std::ofstream& fout)//Сохранение информации о трубе
 void Truba::inputfileTruba(std::ifstream& fin)//Считывание информации о трубе
 {
 	fin >> id;
+	fin >> inputks;
+	fin >> outputks;
 	fin >> name;
 	fin >> dlina;
 	fin >> diametr;
@@ -66,4 +70,24 @@ bool Truba::getsostoyanie()//Возврщение состояния
 unsigned int Truba::getid()//Возвращение id
 {
 	return id;
+}
+
+void Truba::setinputks(unsigned int value)
+{
+	inputks = value;
+}
+
+void Truba::setoutputks(unsigned int value)
+{
+	outputks = value;
+}
+
+unsigned int Truba::getinputks()
+{
+	return inputks;
+}
+
+unsigned int Truba::getoutputks()
+{
+	return outputks;
 }

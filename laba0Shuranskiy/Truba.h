@@ -8,6 +8,8 @@ class Truba
 	double dlina;//Длина
 	int diametr;//Диаметр
 	bool sostoyanie;//Состояние в ремонте или нет
+	unsigned int inputks=0;//Компрессорная станция от которой идёт труба
+	unsigned int outputks=0;//Компрессорная станция к которой идёт труба
 public:
 	static unsigned int IDt;
 	friend std::istream& operator >> (std::istream& in, Truba& t);//Создание трубы
@@ -18,5 +20,9 @@ public:
 	std::string getname();//Возвращение имени
 	bool getsostoyanie();//Возврщение состояния
 	unsigned int getid();//Возвращение id
+	void setinputks(unsigned int value);//Присваиваем id компрессорной станция от которой идёт труба
+	void setoutputks(unsigned int value);//Присваиваем id компрессорной станция к которой идёт труба
+	unsigned int getinputks();//Возвращаем id компрессорной станция от которой идёт труба
+	unsigned int getoutputks();//Возвращаем id компрессорной станция к которой идёт труба
 };
 
