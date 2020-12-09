@@ -8,6 +8,7 @@
 #include "Truba.h";
 #include "KS.h";
 #include "utils.h";
+#include "GTS.h";
 
 using namespace std;
 
@@ -39,9 +40,20 @@ KS& selectKS(map<int,KS>& Zavod)//Выбор компрессорной станции
 	return Zavod[index];
 }
 
-void deleteKS(map<int,KS>& Zavod)//Удаление компрессорной станции
+void deleteKS(map<int,KS>& Zavod,GTS& gts,map<int,Truba>& Truboprovod)//Удаление компрессорной станции
 {
 	unsigned int index = getint("Введите id компрессорной станции", 1u, KS::IDks);
+	gts.deleteidks(index);
+	for (auto& n : Truboprovod)
+	{
+		if(n.second.getinputks()==index)
+			n.second.setinputks(0);
+	}
+	for (auto& n : Truboprovod)
+	{
+		if (n.second.getoutputks() == index)
+			n.second.setoutputks(0);
+	}
 	Zavod.erase(index);
 }
 
@@ -219,151 +231,6 @@ void changeTrubaSostoyanie(map<int,Truba>& Truboprovod)
 	}
 }
 
-void editGTS(map<int, Truba>& Truboprovod,set<int>& idks,set<int>& idt)
-{
-	while (true)
-	{
-		cout << "1-Соединить компрессорные станции\n";
-		cout << "0-Выход\n";
-		int i = getint("Введите номер действия", 0, 1);
-		switch (i)
-		{
-		case 1:
-		{
-			unsigned int ks = getint("Введите id первой копрессорной станции", 0u, KS::IDks);
-			idks.insert(ks);
-			unsigned int t;
-			while (true)
-			{
-				t = getint("Введите id трубы которая будет соединять компрессорный станции", 0u, Truba::IDt);
-				if (Truboprovod[t].getinputks() == 0 && Truboprovod[t].getoutputks() == 0)
-					break;
-				else
-					cout << "Данная труба уже задействована\n";
-			}
-			idt.insert(t);
-			Truboprovod[t].setinputks(ks);
-			ks = getint("Введите id второй копрессорной станции", 0u, KS::IDks);
-			idks.insert(ks);
-			Truboprovod[t].setoutputks(ks);
-			break;
-		}
-		case 0:
-		{
-			return;
-		}
-		default:
-		{
-			cout << "Данные введены не корректно. Попробуйте ещё раз.\n";
-		}
-		}
-	}
-}
-
-void savefilegts(ofstream& fout,set<int>& nabor)
-{
-	for (auto& n : nabor)
-	{
-		fout << n << endl;
-	}
-}
-
-int inputfilegts(ifstream& fin)
-{
-	unsigned int n;
-	fin >> n;
-	return n;
-}
-
-int** creatematrix(int n)
-{
-	int** matrix = new int* [n]();
-	for (int i = 0; i < n; i++)
-	{
-		matrix[i] = new int[n]();
-	}
-	return matrix;
-}
-
-void deletematrix(int** matrix,int n)
-{
-	for (int i = 0; i < n; i++)
-	{
-		delete[] matrix[i];
-	}
-	delete[] matrix;
-}
-
-void editmatrix(int** matrix, map<int, Truba>& Truboprovod, set<int>& idks)
-{
-	vector<unsigned int> sortedidks;
-	for (auto& v : idks)
-	{
-		sortedidks.push_back(v);
-	}
-	int n = idks.size();
-	for (auto& infotruba : Truboprovod)
-	{
-		int first=-1;
-		int second = -1;
-		for (int i = 0; i < n; i++)
-		{
-			if (infotruba.second.getinputks() == sortedidks[i])
-				first = i;
-		}
-		for (int i = 0; i < n; i++)
-		{
-			if (infotruba.second.getoutputks() == sortedidks[i])
-				second = i;
-		}
-		if(first>-1 && second>-1)
-			matrix[first][second] = 1;
-	}
-}
-
-vector<unsigned int> tgtssort(map<int,Truba>& Truboprovod,set<int>& idks,set<int>& idt)
-{
-	vector<unsigned int> sorted;
-	vector<unsigned int> vks;
-	for (auto& v : idks)
-	{
-		vks.push_back(v);
-	}
-	int n = idks.size();
-	int** smmatrix=creatematrix(n);
-	editmatrix(smmatrix, Truboprovod, idks);
-	for (int k = 0; k < n; k++)
-	{
-		for (int i = 0; i < n; i++)
-		{
-			int sum = 0;
-			for (int j = 0; j < n; j++)
-			{
-				sum += smmatrix[i][j];
-			}
-			if (sum == 0)
-			{
-				sorted.push_back(vks[i]);
-				for (int j = 0; j < n; j++)
-				{
-					smmatrix[j][i] = 0;
-				}
-				smmatrix[i][i] = 1;
-			}
-		}
-	}
-	/*for (int i = 0; i < n; i++)
-	{
-		for (int j = 0; j < n; j++)
-		{
-			cout << smmatrix[i][j];
-		}
-		cout << endl;
-	}*/
-	deletematrix(smmatrix,n);	
-	reverse(sorted.begin(), sorted.end());
-	return sorted;
-}
 
 void printmenu()
 {
@@ -387,8 +254,7 @@ int main()
 	setlocale(LC_ALL, "Russian");
 	map <int, Truba> Truboprovod;
 	map <int, KS> Zavod;
-	set<int> idtforgts;
-	set<int> idksforgts;
+	GTS gts;
 	vector<unsigned int> sortedmatrix;
 	while (true)
 	{
@@ -505,22 +371,15 @@ int main()
 			{
 				cout << "Труба или Компрессорная станция не создана. Попробуйте ещё раз.\n";
 			}
-			if (idtforgts.size() > 0 || idksforgts.size() > 0)
+			if (gts.getidks().size() > 0 || gts.getidt().size() > 0)
 			{
 				ofstream fout;
 				fout.open("GTS.txt", ios::out);
 				if (fout.is_open())
 				{
-					fout << idtforgts.size()<<endl;
-					fout << idksforgts.size() << endl;
-					if (idtforgts.size() > 0)
-					{
-						savefilegts(fout, idtforgts);
-					}
-					if (idksforgts.size() > 0)
-					{
-						savefilegts(fout, idksforgts);
-					}
+					fout << gts.getidt().size() <<endl;
+					fout << gts.getidks().size() << endl;
+					gts.savefilegts(fout);
 					fout.close();
 				}
 				break;
@@ -575,16 +434,16 @@ int main()
 				{
 					for (int i = 0; i < countidt; i++)
 					{
-						int n = inputfilegts(fin2);
-						idtforgts.insert(n);
+						int n = gts.inputfilegts(fin2);
+						gts.setidt(n);
 					}
 				}
 				if (countidks > 0)
 				{
 					for (int i = 0; i < countidks; i++)
 					{
-						int n = inputfilegts(fin2);
-						idksforgts.insert(n);
+						int n = gts.inputfilegts(fin2);
+						gts.setidks(n);
 					}
 				}
 				fin2.close();
@@ -624,17 +483,17 @@ int main()
 		}
 		case 11:
 		{
-			deleteKS(Zavod);
+			deleteKS(Zavod,gts,Truboprovod);
 			break;
 		}
 		case 12:
 		{
-			editGTS(Truboprovod, idksforgts, idtforgts);
+			gts.editGTS(Truboprovod);
 			break;
 		}
 		case 13:
 		{
-			sortedmatrix = tgtssort(Truboprovod, idksforgts, idtforgts);
+			sortedmatrix = gts.tgtssort(Truboprovod);
 			if (sortedmatrix.size() > 0)
 			{
 				int k=1;

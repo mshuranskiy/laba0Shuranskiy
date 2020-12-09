@@ -22,6 +22,8 @@ ostream& operator << (ostream& out,const Truba& t)//Вывод информации о трубе
 {
 	out << "Данные о трубе:\n";
 	out << "id трубы: " << t.id << endl;
+	out << "id входной компрессорной станции: " << t.inputks << endl;
+	out << "id выходной компрессорной станции: " << t.outputks << endl;
 	out << "Имя трубы: " << t.name << endl;
 	out << "Длина трубы: " << t.dlina << " (м)" << endl;
 	out << "Диаметр турбы: " << t.diametr << " (мм)" << endl;
