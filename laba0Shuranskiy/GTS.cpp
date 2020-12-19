@@ -122,6 +122,14 @@ void GTS::editmatrix(map<int, Truba>& Truboprovod)
 		if (first > -1 && second > -1)
 			matrix[first][second] = 1;
 	}
+	for (int i = 0; i < n; i++)
+	{
+		for (int j = 0; j < n; j++)
+		{
+			cout << matrix[i][j];
+		}
+		cout << endl;
+	}
 }
 
 vector<unsigned int> GTS::tgtssort(map<int, Truba>& Truboprovod)
@@ -154,15 +162,16 @@ vector<unsigned int> GTS::tgtssort(map<int, Truba>& Truboprovod)
 				matrix[i][i] = 1;
 			}
 		}
-	}
-	for (int i = 0; i < n; i++)
-	{
-		for (int j = 0; j < n; j++)
+		/*for (int i = 0; i < n; i++)
 		{
-			cout << matrix[i][j];
-		}
-		cout << endl;
+			for (int j = 0; j < n; j++)
+			{
+				cout << matrix[i][j];
+			}
+			cout << endl;
+		}*/
 	}
+	
 	deletematrix(n);
 	reverse(sorted.begin(), sorted.end());
 	return sorted;

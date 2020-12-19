@@ -48,9 +48,6 @@ void deleteKS(map<int,KS>& Zavod,GTS& gts,map<int,Truba>& Truboprovod)//Удаление
 	{
 		if(n.second.getinputks()==index)
 			n.second.setinputks(0);
-	}
-	for (auto& n : Truboprovod)
-	{
 		if (n.second.getoutputks() == index)
 			n.second.setoutputks(0);
 	}
