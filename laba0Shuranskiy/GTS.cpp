@@ -78,12 +78,12 @@ int GTS::inputfilegts(std::ifstream& fin)
 	return n;
 }
 
-int** GTS::creatematrix(int n)
+vector<vector<int>> GTS::creatematrix(int n)
 {
-	matrix = new int* [n]();
+	matrix.resize(n);
 	for (int i = 0; i < n; i++)
 	{
-		matrix[i] = new int[n]();
+		matrix[i].resize(n);
 	}
 	return matrix;
 }
@@ -92,9 +92,9 @@ void GTS::deletematrix(int n)
 {
 	for (int i = 0; i < n; i++)
 	{
-		delete[] matrix[i];
+		matrix[i].clear();
 	}
-	delete[] matrix;
+	matrix.clear();
 }
 
 void GTS::editmatrix(map<int, Truba>& Truboprovod)

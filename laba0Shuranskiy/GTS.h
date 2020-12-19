@@ -3,20 +3,21 @@
 #include"Truba.h"
 #include"KS.h"
 #include <set>
+#include <vector>
 #include <iostream>
 #include <fstream>
 
 class GTS
 {
 private:
-	int** matrix;
+	vector<vector<int>> matrix;
 	set<int> idks;
 	set<int> idt;
 public:
 	void editGTS(map<int, Truba>& Truboprovod);
 	void savefilegts(std::ofstream& fout);
 	int inputfilegts(std::ifstream& fin);
-	int** creatematrix(int n);
+	vector<vector<int>> creatematrix(int n);
 	void deletematrix(int n);
 	void editmatrix(map<int, Truba>& Truboprovod);
 	vector<unsigned int> tgtssort(map<int, Truba>& Truboprovod);
