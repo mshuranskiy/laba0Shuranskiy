@@ -25,7 +25,10 @@ public:
 	int findindex(vector<unsigned int> v, int value);
 	float countpotok(map<int, Truba>& Truboprovod, map<int, KS> Zavod,int istok, int stok);
 	float maxpotok(map<int, Truba>& Truboprovod, map<int, KS>& Zavod);
+	float minpyt(map<int, Truba>& Truboprovod, map<int, KS>& Zavod);
+	float countpyt(map<int, Truba>& Truboprovod, map<int, KS>& Zavod, int istok, int stok);
 	void editmatrixformaxpotok(map<int, Truba>& Truboprovod);
+	void editmatrixforminpyt(map<int, Truba>& Truboprovod);
 	set<int> getidks();
 	set<int> getidt();
 	void setidks(int value);

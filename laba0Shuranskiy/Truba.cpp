@@ -103,3 +103,8 @@ int Truba::getproizv()
 {
 	return proizv;
 }
+
+double Truba::getdlina()
+{
+	return dlina;
+}

@@ -133,6 +133,8 @@ void GTS::editmatrix(map<int, Truba>& Truboprovod)
 }
 
 
+
+
 void GTS::editmatrixformaxpotok(map<int, Truba>& Truboprovod)
 {
 	vector<unsigned int> sortedidks;
@@ -157,6 +159,41 @@ void GTS::editmatrixformaxpotok(map<int, Truba>& Truboprovod)
 		}
 		if (first > -1 && second > -1 && infotruba.second.getsostoyanie() == false)
 			matrix[first][second] = infotruba.second.getproizv();
+	}
+	for (int i = 0; i < n; i++)
+	{
+		for (int j = 0; j < n; j++)
+		{
+			cout << matrix[i][j];
+		}
+		cout << endl;
+	}
+}
+
+void GTS::editmatrixforminpyt(map<int, Truba>& Truboprovod)
+{
+	vector<unsigned int> sortedidks;
+	for (auto& v : idks)
+	{
+		sortedidks.push_back(v);
+	}
+	int n = idks.size();
+	for (auto& infotruba : Truboprovod)
+	{
+		int first = -1;
+		int second = -1;
+		for (int i = 0; i < n; i++)
+		{
+			if (infotruba.second.getinputks() == sortedidks[i])
+				first = i;
+		}
+		for (int i = 0; i < n; i++)
+		{
+			if (infotruba.second.getoutputks() == sortedidks[i])
+				second = i;
+		}
+		if (first > -1 && second > -1 && infotruba.second.getsostoyanie() == false)
+			matrix[first][second] = infotruba.second.getdlina();
 	}
 	for (int i = 0; i < n; i++)
 	{
@@ -320,6 +357,94 @@ float GTS::maxpotok(map<int, Truba>& Truboprovod, map<int, KS>& Zavod)
 	float F=countpotok(Truboprovod, Zavod, istok, stok);
 	deletematrix(n);
 	return F;
+}
+
+float GTS::countpyt(map<int, Truba>& Truboprovod, map<int, KS>& Zavod, int istok, int stok)
+{
+	vector<unsigned int> vks;
+	for (auto& v : idks)
+	{
+		vks.push_back(v);
+	}
+	float F = 0;
+	vector< unsigned int> queue;
+	queue.push_back(istok);
+	int iterator = findindex(vks, istok);
+	while (true)
+	{
+		for (int i = 0; i < matrix.size(); i++)
+		{
+			if (matrix[iterator][i] != 0)
+			{
+				if (Zavod[vks[i]].pometka >= (matrix[iterator][i] + Zavod[queue[0]].pometka))
+				{
+					Zavod[vks[i]].pometka = matrix[iterator][i] + Zavod[queue[0]].pometka;
+					bool f = false;
+					for (auto& k : queue)
+					{
+						if (k == vks[i])
+							f = true;
+					}
+					if (f == false)
+						queue.push_back(vks[i]);
+				}
+			}
+		}
+		queue.erase(queue.begin());
+		if (queue.size() == 0)
+			return Zavod[stok].pometka;
+		float min = INFINITY;
+		int id = 0;
+		for (auto& i : queue)
+		{
+			if (min > Zavod[i].pometka)
+			{
+				min = Zavod[i].pometka;
+				id = findindex(queue, i);
+			}
+		}
+		swap(queue[0], queue[id]);
+		iterator = findindex(vks, queue[0]);
+	}
+}
+
+float GTS::minpyt(map<int, Truba>& Truboprovod, map<int, KS>& Zavod)
+{
+	int istok;
+	int stok;
+	while (true)
+	{
+		istok = getint("Введите id первой компрессорной станции", 1u, KS::IDks);
+		stok = getint("Введите id второй компрессорной станции", 1u, KS::IDks);
+		bool f1 = false;
+		bool f2 = false;
+		for (auto& i : idks)
+		{
+			Zavod[i].pometka = INFINITY;
+			if (i == istok)
+			{
+				Zavod[i].pometka = 0;
+				f1 = true;
+			}
+			if (i == stok)
+			{
+				Zavod[i].pometka = INFINITY;
+				f2 = true;
+			}
+		}
+		if (istok == stok || f1 == false || f2 == false)
+		{
+			cout << "Данные введены некорректно. Попробуйте ещё раз\n";
+		}
+		else
+			break;
+	}
+	size_t n = idks.size();
+	matrix = creatematrix(n);
+	editmatrixforminpyt(Truboprovod);
+	float S = countpyt(Truboprovod, Zavod, istok, stok);
+	deletematrix(n);
+	return S;
 }
 
 set<int> GTS::getidks()

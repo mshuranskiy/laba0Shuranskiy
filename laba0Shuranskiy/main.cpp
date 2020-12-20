@@ -515,6 +515,9 @@ int main()
 		}
 		case 15:
 		{
+			float max = gts.minpyt(Truboprovod, Zavod);
+			cout << "Минимальный путь между компрессорными станциями равен равен\n";
+			cout << max << endl;
 			break;
 		}
 		case 0:

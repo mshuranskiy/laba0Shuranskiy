@@ -26,5 +26,6 @@ public:
 	unsigned int getinputks();//Возвращаем id компрессорной станция от которой идёт труба
 	unsigned int getoutputks();//Возвращаем id компрессорной станция к которой идёт труба
 	int getproizv();
+	double getdlina();
 };
 
