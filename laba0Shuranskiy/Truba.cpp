@@ -4,6 +4,7 @@
 #include <fstream>
 #include <string>
 #include <vector>
+#include <cmath>
 
 unsigned int Truba::IDt = 0;
 istream& operator >> (istream& in, Truba& t)//Создание трубы
@@ -15,6 +16,7 @@ istream& operator >> (istream& in, Truba& t)//Создание трубы
 	t.dlina = getint("Введите длину трубы (Еденица измерения: м)", 1.0, 10000.0);
 	t.diametr = getint("Введите диаметр трубы(Еденица измерения : мм)", 1, 10000);
 	t.sostoyanie = false;
+	t.proizv = sqrt(pow(t.diametr,5/t.dlina)) * 10;
 	return in;
 }
 
@@ -28,6 +30,7 @@ ostream& operator << (ostream& out,const Truba& t)//Вывод информации о трубе
 	out << "Длина трубы: " << t.dlina << " (м)" << endl;
 	out << "Диаметр турбы: " << t.diametr << " (мм)" << endl;
 	out << "Состояние трубы: " << (t.sostoyanie ? "В ремонте\n" : "Не в ремонте\n");
+	out << "Производительность: " << t.proizv << endl;
 	return out;
 }
 
@@ -46,6 +49,7 @@ void Truba::savefileTruba(std::ofstream& fout)//Сохранение информации о трубе
 	fout << dlina << endl;
 	fout << diametr << endl;
 	fout << sostoyanie << endl;
+	fout << proizv << endl;
 }
 
 void Truba::inputfileTruba(std::ifstream& fin)//Считывание информации о трубе
@@ -57,6 +61,7 @@ void Truba::inputfileTruba(std::ifstream& fin)//Считывание информации о трубе
 	fin >> dlina;
 	fin >> diametr;
 	fin >> sostoyanie;
+	fin >> proizv;
 }
 
 std::string Truba::getname()//Возвращение имени
@@ -92,4 +97,9 @@ unsigned int Truba::getinputks()
 unsigned int Truba::getoutputks()
 {
 	return outputks;
+}
+
+int Truba::getproizv()
+{
+	return proizv;
 }

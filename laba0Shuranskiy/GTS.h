@@ -22,6 +22,10 @@ public:
 	void editmatrix(map<int, Truba>& Truboprovod);
 	vector<unsigned int> tgtssort(map<int, Truba>& Truboprovod);
 	void deleteidks(int value);
+	int findindex(vector<unsigned int> v, int value);
+	float countpotok(map<int, Truba>& Truboprovod, map<int, KS> Zavod,int istok, int stok);
+	float maxpotok(map<int, Truba>& Truboprovod, map<int, KS>& Zavod);
+	void editmatrixformaxpotok(map<int, Truba>& Truboprovod);
 	set<int> getidks();
 	set<int> getidt();
 	void setidks(int value);

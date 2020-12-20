@@ -10,6 +10,7 @@ class Truba
 	bool sostoyanie;//Состояние в ремонте или нет
 	unsigned int inputks=0;//Компрессорная станция от которой идёт труба
 	unsigned int outputks=0;//Компрессорная станция к которой идёт труба
+	int proizv;
 public:
 	static unsigned int IDt;
 	friend std::istream& operator >> (std::istream& in, Truba& t);//Создание трубы
@@ -24,5 +25,6 @@ public:
 	void setoutputks(unsigned int value);//Присваиваем id компрессорной станция к которой идёт труба
 	unsigned int getinputks();//Возвращаем id компрессорной станция от которой идёт труба
 	unsigned int getoutputks();//Возвращаем id компрессорной станция к которой идёт труба
+	int getproizv();
 };
 
