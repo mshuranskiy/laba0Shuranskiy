@@ -236,24 +236,21 @@ float GTS::countpotok(map<int, Truba>& Truboprovod, map<int, KS> Zavod, int isto
 		Zavod[istok].pometka = INFINITY;
 		while (Zavod[stok].pometka == 0)
 		{
-			int it = 0;
 			for (int i = 0; i < matrix.size(); i++)
 			{
 				if (matrix[iterator][i] != 0)
 				{
-					if (Zavod[queue[0]].pometka >= (matrix[iterator][i] /*- Zavod[vks[i]].potok*/))
+					if (Zavod[queue[0]].pometka >= matrix[iterator][i])
 					{
-						Zavod[vks[i]].pometka = matrix[iterator][i] - Zavod[vks[i]].potok;
+						Zavod[vks[i]].pometka = matrix[iterator][i];
 						Zavod[vks[i]].pred = vks[iterator];
 						queue.push_back(vks[i]);
-						//it++;
 					}
 					else
 					{
 						Zavod[vks[i]].pometka = Zavod[queue[0]].pometka;
 						Zavod[vks[i]].pred = vks[iterator];
 						queue.push_back(vks[i]);
-						//it++;
 					}
 				}
 			}
@@ -269,7 +266,6 @@ float GTS::countpotok(map<int, Truba>& Truboprovod, map<int, KS> Zavod, int isto
 		int index2 = findindex(vks, stok);
 		for (int i = 0; i < count; i++)
 		{
-			Zavod[Zavod[iter].pred].potok = s;
 			matrix[index1][index2] -= s;
 			if (matrix[index1][index2] == s)
 				matrix[index1][index2] = 0;
@@ -284,7 +280,6 @@ float GTS::countpotok(map<int, Truba>& Truboprovod, map<int, KS> Zavod, int isto
 		}
 		F += s;
 	}
-	//return F;
 }
 
 

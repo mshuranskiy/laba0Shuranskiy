@@ -10,7 +10,6 @@ class KS
 	int efect;//Ёффективность
 public:
 	float pometka=0;
-	int potok = 0;
 	int pred ;
 	static unsigned int IDks;
 	friend std::istream& operator >> (std::istream& in, KS& ks);//—оздание компрессорной станции
